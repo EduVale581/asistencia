@@ -1,24 +1,54 @@
-import logo from './logo.svg';
 import './App.css';
+import Login from './Paginas/Login';
+import Inicio from './Paginas/Inicio';
+import { AuthProvider } from './Context/AuthContext';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { PrivateRoute } from './Utils/PrivateRoute';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: "#F22E52",
+      main: "#A61F38",
+      dark: "#B3223C",
+      contrastText: "#fff",
+    },
+    secondary: {
+      light: "#ffffff",
+      main: "#ff802e",
+      dark: "#cccccc",
+      contrastText: "#ff802e",
+    },
+    default: {
+      light: "#ffffff",
+      main: "#ffffff",
+      dark: "#cccccc",
+      contrastText: "#ff802e",
+
+    }
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Inicio />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
