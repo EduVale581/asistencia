@@ -31,12 +31,22 @@ export default function Login() {
     const ingresar = async (e) => {
         setLoading(true);
         try {
-            await login(email, password);
-            setLoading(false);
-            navigate('/');
+            let elemento = await login(email, password);
+            if (elemento === "Correo Inválido") {
+                setLoading(false);
+                setError('Correo Inválido');
+                setTimeout(() => setError(''), 1500);
+
+            }
+            else {
+                setLoading(false);
+                navigate('/');
+
+            }
+
         } catch (error) {
             setLoading(false);
-            setError('Wrong Credentials');
+            setError('Credenciales incorrectas');
             setTimeout(() => setError(''), 1500);
         }
     }

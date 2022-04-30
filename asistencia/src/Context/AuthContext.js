@@ -21,7 +21,16 @@ export const AuthProvider = (props) => {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                setCurrentUser(user);
+                if (user.email && String(user.email).includes("@alumnos.utalca.cl")) {
+                    setCurrentUser({ ...user, tipoUsuario: "Estudiante" });
+
+                }
+                else {
+                    setCurrentUser({ ...user, tipoUsuario: "Profesor" });
+
+                }
+
+
 
             }
             else {
@@ -32,7 +41,13 @@ export const AuthProvider = (props) => {
     }, [navigate])
 
     const login = (email, password) => {
-        return signInWithEmailAndPassword(auth, email, password);
+        let correoElectronico = String(email).toLowerCase();
+        if (correoElectronico.includes("@alumnos.utalca.cl") || correoElectronico.includes("@utalca.cl")) {
+            return signInWithEmailAndPassword(auth, email, password);
+        }
+        else {
+            return "Correo Inválido";
+        }
     }
 
     const logout = () => {
