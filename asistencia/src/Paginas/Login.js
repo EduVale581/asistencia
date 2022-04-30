@@ -9,6 +9,8 @@ import {
     Grid,
     Stack,
     TextField,
+    Card,
+    CardMedia,
 } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -54,6 +56,13 @@ export default function Login() {
 
                 <Grid item>
                     <Stack spacing={2}>
+                        <Card style={{ marginBottom: "30%" }}>
+                            <CardMedia
+                                component="img"
+                                height="140"
+                                image="/static/images/Logo.png"
+                            />
+                        </Card>
                         <TextField
                             fullWidth
                             type={"email"}

@@ -1,4 +1,3 @@
-import './App.css';
 import Login from './Paginas/Login';
 import Inicio from './Paginas/Inicio';
 import { AuthProvider } from './Context/AuthContext';
