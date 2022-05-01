@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';git 
 
 
 export default function Inicio() {
