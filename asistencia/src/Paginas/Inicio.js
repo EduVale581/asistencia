@@ -36,11 +36,6 @@ export default function Inicio() {
                 </Typography>
 
                 <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
-<<<<<<< HEAD
-                
-=======
-
->>>>>>> main
                 {currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor" && (
                     <Grid container style={{ marginLeft: "10px" }}>
                         <Grid item>
