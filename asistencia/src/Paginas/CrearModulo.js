@@ -3,11 +3,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { 
         Button, Checkbox, FormControlLabel,
         FormGroup, Typography, AccordionDetails, AccordionSummary,
-        Accordion, Autocomplete, TextField, Box, Grid
+        Accordion, Autocomplete, TextField, Box, Grid, Divider, Card,
+        CardContent, Stack
         } 
 from '@mui/material';
 
 const CrearModulo = () => {
+
+    const [nombreModulo, setNombreModulo] = useState('');
+    const [codigoModulo, setCodigoModulo] = useState('');
+    const [fechaInicio, setFechaInicio] = useState('');
+    const [fechaTermino, setFechaTermino] = useState('');
+    const [carrera, setCarrera] = useState('');
+    const [bloquesModulo, setBloquesModulo] = useState('');
 
     const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const bloques = [
@@ -24,72 +32,126 @@ const CrearModulo = () => {
         'Bloque 11 / 20:10 - 21:10'
     ]
     const carrerasUtal = [
-        {label: 'Ingeniería Civil en Computación - Campus Los Niches'},
-        {label: 'Ingeniería Civil Mecánica - Campus Los Niches'},
-        {label: 'Ingeniería Civil en Minas - Campus Los Niches'},
-        {label: 'Ingeniería Civil en Mecatrónica - Campus Los Niches'},
-        {label: 'Ingeniería Civil Industrial - Campus Los Niches'},
-        {label: 'Ingeniería Civil Eléctrica - Campus Los Niches'},
-        {label: 'Ingeniería Civil en Obras Civiles - Campus Los Niches'},
+        'Ingeniería Civil en Computación - Campus Los Niches',
+         'Ingeniería Civil Mecánica - Campus Los Niches',
+        'Ingeniería Civil en Minas - Campus Los Niches',
+        'Ingeniería Civil en Mecatrónica - Campus Los Niches',
+        'Ingeniería Civil Industrial - Campus Los Niches',
+        'Ingeniería Civil Eléctrica - Campus Los Niches',
+        'Ingeniería Civil en Obras Civiles - Campus Los Niches',
     ]
+
+    const handleInput = () =>{
+        console.log({nombreModulo}, {codigoModulo}, {fechaInicio}, {fechaTermino}, {carrera})
+        console.log({bloquesModulo})
+    }
 
     return (
         <>
             <div>CrearModulo</div>
-            <br/>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={8}>
-                        <TextField label="Nombre módulo" variant='outlined' fullWidth/>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <TextField label="Codigo módulo" variant='outlined' fullWidth/>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <TextField label="Fecha de inicio" variant='outlined' fullWidth/>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <TextField label="Fecha de término" variant='outlined' fullWidth/>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={carrerasUtal}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Carrera" />}
-                            fullWidth
-                            />
-                    </Grid>
-                    <Grid item xs={10}>
+            <Stack spacing={2} style={{ marginTop: "50px", marginRight: "50px"}}>
+                <Typography
+                    style={{ textAlign: "center" }}
+                    variant='h4'
+                    color="primary"
+                >
+                    Crear Módulo
+                </Typography>
+                <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
+                <Box sx={{ flexGrow: 1 }} style={{ margin: "50px", padding: '10px', backgroundColor: "#E5E5E5" }}>
+                    
+                    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}  >
+                        <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{margin: '10px'}}>
+                            
+                            <Grid item xs={8}>
+                                <TextField 
+                                    label="Nombre módulo" 
+                                    variant='outlined' 
+                                    fullWidth 
+                                    onChange={(e)=>{setNombreModulo(e.target.value)}}
+                                    />
+                            </Grid>
+
+                            <Grid item xs={2.4}>
+                                <TextField 
+                                    label="Codigo módulo" 
+                                    variant='outlined' 
+                                    fullWidth 
+                                    onChange={(e)=>{setCodigoModulo(e.target.value)}}
+                                    />
+                            </Grid>
+
+                            <Grid item xs={3.5}>
+                                <TextField 
+                                    label="Fecha de inicio" 
+                                    variant='outlined' 
+                                    helperText='Fomato: dd/mm/aaaa' 
+                                    fullWidth
+                                    onChange={(e)=>{setFechaInicio(e.target.value)}}
+                                    />
+                            </Grid>
+                            
+                            <Grid item xs={3.5}>
+                                <TextField 
+                                    label="Fecha de término" 
+                                    variant='outlined' 
+                                    helperText='Fomato: dd/mm/aaaa' 
+                                    fullWidth
+                                    onChange={(e)=>{setFechaTermino(e.target.value)}}
+                                    />
+                            </Grid>
+
+                            <Grid item xs={4}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={carrerasUtal}
+                                    sx={{ width: 600 }}
+                                    renderInput={(params) => <TextField {...params} label="Carrera" />}
+                                    fullWidth
+                                    onInputChange={(e, inputValue)=>{setCarrera(inputValue)}}
+                                    />
+                            </Grid>
+
+                        </Grid>
+                    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{margin: '10px'}}>
                         {
                             dias.map((dia, index)=>(
-                                <Accordion key={index}>
+                                <Grid item xs={2} sm={4} md={4} key={index}>
 
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1a-content"
-                                        
-                                        >
-                                        <Typography>{dia}</Typography>
-                                    </AccordionSummary>
-                                    
-                                    <AccordionDetails>
-                                        {bloques.map((bloque, index)=>(
-                                            <FormGroup key={index}>
-                                                <FormControlLabel control={<Checkbox />} label={bloque} />
-                                            </FormGroup>
-                                        ))}
-                                    </AccordionDetails>
+                                        <Accordion key={index} style={{margin: '10px'}}>
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="panel1a-content"
+                                                
+                                                >
+                                                <Typography>{dia}</Typography>
+                                            </AccordionSummary>
 
-                                </Accordion>
+                                            <AccordionDetails>
+                                                {bloques.map((bloque, index)=>(
+                                                    <FormGroup key={index}>
+                                                        <FormControlLabel control={<Checkbox />} label={bloque} />
+                                                    </FormGroup>
+                                                ))}
+                                            </AccordionDetails>
+
+                                            </Accordion>
+                                </Grid>
+                                
                             ))
                         }
                     </Grid>
-                </Grid>
-            </Box>
+                    </Grid>
+                    <Box sx={{'& button':{m:1}}} style={{margin: '10px'}}>
+                        <Button variant="contained" onClick={handleInput}>Añadir módulo</Button>
+                        <Button variant="contained">Vaciar campos</Button>
+                        <Button variant="contained">Cancelar</Button>
+                    </Box>
+                </Box>
+            </Stack>
         </>
     )
 }
 
-export default CrearModulo
+export default CrearModulo;
