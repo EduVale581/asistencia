@@ -1,4 +1,3 @@
-import './App.css';
 import Login from './Paginas/Login';
 import Inicio from './Paginas/Inicio';
 import { AuthProvider } from './Context/AuthContext';
@@ -16,7 +15,7 @@ const theme = createTheme({
     },
     secondary: {
       light: "#ffffff",
-      main: "#ff802e",
+      main: "#B3223C",
       dark: "#cccccc",
       contrastText: "#ff802e",
     },

@@ -9,6 +9,8 @@ import {
     Grid,
     Stack,
     TextField,
+    Card,
+    CardMedia,
 } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -29,12 +31,22 @@ export default function Login() {
     const ingresar = async (e) => {
         setLoading(true);
         try {
-            await login(email, password);
-            setLoading(false);
-            navigate('/');
+            let elemento = await login(email, password);
+            if (elemento === "Correo Inválido") {
+                setLoading(false);
+                setError('Correo Inválido');
+                setTimeout(() => setError(''), 1500);
+
+            }
+            else {
+                setLoading(false);
+                navigate('/');
+
+            }
+
         } catch (error) {
             setLoading(false);
-            setError('Wrong Credentials');
+            setError('Credenciales incorrectas');
             setTimeout(() => setError(''), 1500);
         }
     }
@@ -54,6 +66,13 @@ export default function Login() {
 
                 <Grid item>
                     <Stack spacing={2}>
+                        <Card style={{ marginBottom: "30%" }}>
+                            <CardMedia
+                                component="img"
+                                height="140"
+                                image="/static/images/Logo.png"
+                            />
+                        </Card>
                         <TextField
                             fullWidth
                             type={"email"}
