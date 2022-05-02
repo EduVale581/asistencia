@@ -15,7 +15,7 @@ const CrearModulo = () => {
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaTermino, setFechaTermino] = useState('');
     const [carrera, setCarrera] = useState('');
-    const [bloquesModulo, setBloquesModulo] = useState('');
+    const [horario, setHorario] = useState([]);
 
     const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const bloques = [
@@ -41,19 +41,35 @@ const CrearModulo = () => {
         'Ingeniería Civil en Obras Civiles - Campus Los Niches',
     ]
 
-    const handleInput = () =>{
-        console.log({nombreModulo}, {codigoModulo}, {fechaInicio}, {fechaTermino}, {carrera})
-        console.log({bloquesModulo})
+    const handleSubmit = () =>{
+        console.log({nombreModulo}, {codigoModulo}, {fechaInicio}, {fechaTermino}, {carrera}, {horario});
+    }
+
+    const handleReset = () =>{
+        setNombreModulo('');
+        setCodigoModulo('');
+        setFechaInicio('');
+        setFechaTermino('');
+        setCarrera('');
+        setHorario([]);
+    }
+
+    const handleChecBox = (dia, bloque) =>{
+        let bloqueDefinido = dia+' '+bloque;
+        if(horario.includes(bloqueDefinido)){
+            var pos = horario.indexOf( bloqueDefinido );
+            horario.splice( pos, 1 );
+        }else{
+            setHorario([...horario, bloqueDefinido]);
+        }
     }
 
     return (
         <>
-            <div>CrearModulo</div>
             <Stack spacing={2} style={{ marginTop: "50px", marginRight: "50px"}}>
                 <Typography
-                    style={{ textAlign: "center" }}
+                    style={{ textAlign: "center", color: "#A61F35"}}
                     variant='h4'
-                    color="primary"
                 >
                     Crear Módulo
                 </Typography>
@@ -65,9 +81,10 @@ const CrearModulo = () => {
                             
                             <Grid item xs={8}>
                                 <TextField 
-                                    label="Nombre módulo" 
+                                    label={"Nombre módulo"} 
                                     variant='outlined' 
-                                    fullWidth 
+                                    fullWidth
+                                    value={nombreModulo}
                                     onChange={(e)=>{setNombreModulo(e.target.value)}}
                                     />
                             </Grid>
@@ -77,6 +94,7 @@ const CrearModulo = () => {
                                     label="Codigo módulo" 
                                     variant='outlined' 
                                     fullWidth 
+                                    value={codigoModulo}
                                     onChange={(e)=>{setCodigoModulo(e.target.value)}}
                                     />
                             </Grid>
@@ -87,6 +105,7 @@ const CrearModulo = () => {
                                     variant='outlined' 
                                     helperText='Fomato: dd/mm/aaaa' 
                                     fullWidth
+                                    value={fechaInicio}
                                     onChange={(e)=>{setFechaInicio(e.target.value)}}
                                     />
                             </Grid>
@@ -97,6 +116,7 @@ const CrearModulo = () => {
                                     variant='outlined' 
                                     helperText='Fomato: dd/mm/aaaa' 
                                     fullWidth
+                                    value={fechaTermino}
                                     onChange={(e)=>{setFechaTermino(e.target.value)}}
                                     />
                             </Grid>
@@ -109,6 +129,7 @@ const CrearModulo = () => {
                                     sx={{ width: 600 }}
                                     renderInput={(params) => <TextField {...params} label="Carrera" />}
                                     fullWidth
+                                    value={carrera}
                                     onInputChange={(e, inputValue)=>{setCarrera(inputValue)}}
                                     />
                             </Grid>
@@ -131,7 +152,13 @@ const CrearModulo = () => {
                                             <AccordionDetails>
                                                 {bloques.map((bloque, index)=>(
                                                     <FormGroup key={index}>
-                                                        <FormControlLabel control={<Checkbox />} label={bloque} />
+                                                        <FormControlLabel 
+                                                            control={
+                                                            <Checkbox 
+                                                                onChange={()=>{handleChecBox(dia, bloque)}}
+                                                            />} 
+                                                            label={bloque} 
+                                                        />
                                                     </FormGroup>
                                                 ))}
                                             </AccordionDetails>
@@ -144,8 +171,8 @@ const CrearModulo = () => {
                     </Grid>
                     </Grid>
                     <Box sx={{'& button':{m:1}}} style={{margin: '10px'}}>
-                        <Button variant="contained" onClick={handleInput}>Añadir módulo</Button>
-                        <Button variant="contained">Vaciar campos</Button>
+                        <Button variant='contained' onClick={handleSubmit}>Añadir módulo</Button>
+                        <Button variant="contained" onClick={handleReset}>Vaciar campos</Button>
                         <Button variant="contained">Cancelar</Button>
                     </Box>
                 </Box>
