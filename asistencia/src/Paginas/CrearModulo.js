@@ -3,8 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { 
         Button, Checkbox, FormControlLabel,
         FormGroup, Typography, AccordionDetails, AccordionSummary,
-        Accordion, Autocomplete, TextField, Box, Grid, Divider, Card,
-        CardContent, Stack
+        Accordion, Autocomplete, TextField, Box, Grid, Divider, Stack
         } 
 from '@mui/material';
 
