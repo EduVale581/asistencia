@@ -126,10 +126,8 @@ const CrearModulo = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={carrerasUtal}
-                                    sx={{ width: 600 }}
                                     renderInput={(params) => <TextField {...params} label="Carrera" />}
                                     fullWidth
-                                    value={carrera}
                                     onInputChange={(e, inputValue)=>{setCarrera(inputValue)}}
                                     />
                             </Grid>
