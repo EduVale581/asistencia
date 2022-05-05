@@ -7,6 +7,10 @@ import {
         } 
 from '@mui/material';
 
+import {db} from '../Utils/firebase'
+import { collection, addDoc } from "firebase/firestore";
+
+
 const CrearModulo = () => {
 
     const [nombreModulo, setNombreModulo] = useState('');
@@ -32,7 +36,7 @@ const CrearModulo = () => {
     ]
     const carrerasUtal = [
         'Ingeniería Civil en Computación - Campus Los Niches',
-         'Ingeniería Civil Mecánica - Campus Los Niches',
+        'Ingeniería Civil Mecánica - Campus Los Niches',
         'Ingeniería Civil en Minas - Campus Los Niches',
         'Ingeniería Civil en Mecatrónica - Campus Los Niches',
         'Ingeniería Civil Industrial - Campus Los Niches',
@@ -40,8 +44,22 @@ const CrearModulo = () => {
         'Ingeniería Civil en Obras Civiles - Campus Los Niches',
     ]
 
-    const handleSubmit = () =>{
-        console.log({nombreModulo}, {codigoModulo}, {fechaInicio}, {fechaTermino}, {carrera}, {horario});
+    const handleSubmit = async () =>{
+        try {
+            /* const data = await db.collection('modulos').get();
+            console.log(data.docs); */
+            const dataBase = db;
+            const docRef = await addDoc(collection(dataBase, "modulos"), {
+                nombre: nombreModulo,
+                codigo: codigoModulo,
+                fechaInicio: fechaInicio,
+                fechaTermino: fechaTermino,
+                carrera: carrera,
+                horario: horario
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleReset = () =>{
