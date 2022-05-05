@@ -9,17 +9,26 @@ import {
     Button,
     Stack,
     Typography,
-    Divider
+    Divider,
+    CardActions,
+    Dialog,
+    DialogContent,
+    DialogActions
 } from '@mui/material/';
+import { useNavigate } from "react-router-dom"
+import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
 
 import AddIcon from "@mui/icons-material/Add";
 
 
 export default function Inicio() {
-
+    const [asisAlumno, setAsis] = useState(false);
     const { currentUser } = useAuth();
 
     const [modulos, setModulos] = useState([]);
+    const navigate = useNavigate();
+    const handleOpen = () => setAsis(true);
+    const handleClose = () => setAsis(false);
 
 
     return (
@@ -55,11 +64,20 @@ export default function Inicio() {
                     {Array.from(Array(6)).map((_, index) => (
                         <Grid item xs={2} sm={4} md={4} key={index}>
                             <Card sx={{ height: 300 }}>
+
                                 <CardContent>
-                                    <Box sx={{ height: 230 }}>
+                                    <CardActions onClick = {() => {
+                                         if( currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor"){
+                                            navigate ("/modulos");
+                                    }else{
+                                        setAsis(true);
+                                    }}}>
+                                        <Box sx={{ height: 230 }}>
 
-                                    </Box>
+                                        </Box>
 
+                                    </CardActions>
+                                    
                                     <Box sx={{ height: 90 }}>
                                         <Button
                                             fullWidth
@@ -79,7 +97,26 @@ export default function Inicio() {
                 </Grid>
 
             </Stack>
-
+            {asisAlumno && (
+                <Dialog
+                open={asisAlumno}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                fullWidth
+                maxWidth = "md"
+              >
+                            <DialogContent>
+                                <VisualizarModuloEstudiante />
+                            </DialogContent>
+                           <DialogActions>
+                               <Button onClick = {handleClose}>
+                                   Cerrar
+                               </Button>
+                           </DialogActions>
+        
+                            </Dialog>
+            )}                       
 
         </div>
     )
