@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import {
     Grid,
     Card,
@@ -10,19 +9,28 @@ import {
     Button,
     Stack,
     Typography,
-    Divider
+    Divider,
+    CardActions,
+    Dialog,
+    DialogContent,
+    DialogActions
 } from '@mui/material/';
+import { useNavigate } from "react-router-dom"
+import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
+import CrearModulo from './CrearModulo';
 
 import AddIcon from "@mui/icons-material/Add";
-import CrearModulo from './CrearModulo';
 
 
 export default function Inicio() {
-
+    const [asisAlumno, setAsis] = useState(false);
     const { currentUser } = useAuth();
 
     const [modulos, setModulos] = useState([]);
     const navigate = useNavigate();
+    const handleOpen = () => setAsis(true);
+    const handleClose = () => setAsis(false);
+
 
     return (
         <div>
@@ -38,12 +46,13 @@ export default function Inicio() {
                 </Typography>
 
                 <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
+
                 {currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor" && (
                     <Grid container style={{ marginLeft: "10px" }}>
                         <Grid item>
                             <Button
                                 variant="contained"
-                                onClick={()=>{navigate('/crearModulo')}}
+                                onClick={() => { navigate('/crearModulo') }}
                             >
                                 <AddIcon /> Agregar Módulo
                             </Button>
@@ -57,10 +66,22 @@ export default function Inicio() {
                     {Array.from(Array(6)).map((_, index) => (
                         <Grid item xs={2} sm={4} md={4} key={index}>
                             <Card sx={{ height: 300 }}>
-                                <CardContent>
-                                    <Box sx={{ height: 230 }}>
 
-                                    </Box>
+                                <CardContent>
+                                    <CardActions
+                                        onClick={() => {
+                                            if (currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor") {
+                                                navigate("/modulos");
+                                            } else {
+                                                setAsis(true);
+                                            }
+                                        }}
+                                    >
+                                        <Box sx={{ height: 230 }}>
+
+                                        </Box>
+
+                                    </CardActions>
 
                                     <Box sx={{ height: 90 }}>
                                         <Button
@@ -81,7 +102,26 @@ export default function Inicio() {
                 </Grid>
 
             </Stack>
+            {asisAlumno && (
+                <Dialog
+                    open={asisAlumno}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogContent>
+                        <VisualizarModuloEstudiante />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>
+                            Cerrar
+                        </Button>
+                    </DialogActions>
 
+                </Dialog>
+            )}
 
         </div>
     )
