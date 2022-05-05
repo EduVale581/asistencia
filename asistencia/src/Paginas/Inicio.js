@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import {
     Grid,
     Card,
@@ -13,6 +14,7 @@ import {
 } from '@mui/material/';
 
 import AddIcon from "@mui/icons-material/Add";
+import CrearModulo from './CrearModulo';
 
 
 export default function Inicio() {
@@ -20,7 +22,7 @@ export default function Inicio() {
     const { currentUser } = useAuth();
 
     const [modulos, setModulos] = useState([]);
-
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -36,12 +38,12 @@ export default function Inicio() {
                 </Typography>
 
                 <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
-
                 {currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor" && (
                     <Grid container style={{ marginLeft: "10px" }}>
                         <Grid item>
                             <Button
                                 variant="contained"
+                                onClick={()=>{navigate('/crearModulo')}}
                             >
                                 <AddIcon /> Agregar Módulo
                             </Button>
