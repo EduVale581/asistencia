@@ -66,18 +66,21 @@ export default function Inicio() {
                             <Card sx={{ height: 300 }}>
 
                                 <CardContent>
-                                    <CardActions onClick = {() => {
-                                         if( currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor"){
-                                            navigate ("/modulos");
-                                    }else{
-                                        setAsis(true);
-                                    }}}>
+                                    <CardActions
+                                        onClick={() => {
+                                            if (currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor") {
+                                                navigate("/modulos");
+                                            } else {
+                                                setAsis(true);
+                                            }
+                                        }}
+                                    >
                                         <Box sx={{ height: 230 }}>
 
                                         </Box>
 
                                     </CardActions>
-                                    
+
                                     <Box sx={{ height: 90 }}>
                                         <Button
                                             fullWidth
@@ -99,24 +102,24 @@ export default function Inicio() {
             </Stack>
             {asisAlumno && (
                 <Dialog
-                open={asisAlumno}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                fullWidth
-                maxWidth = "md"
-              >
-                            <DialogContent>
-                                <VisualizarModuloEstudiante />
-                            </DialogContent>
-                           <DialogActions>
-                               <Button onClick = {handleClose}>
-                                   Cerrar
-                               </Button>
-                           </DialogActions>
-        
-                            </Dialog>
-            )}                       
+                    open={asisAlumno}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogContent>
+                        <VisualizarModuloEstudiante />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>
+                            Cerrar
+                        </Button>
+                    </DialogActions>
+
+                </Dialog>
+            )}
 
         </div>
     )

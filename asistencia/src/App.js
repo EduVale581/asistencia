@@ -1,10 +1,10 @@
 import Login from './Paginas/Login';
 import Inicio from './Paginas/Inicio';
-import VisualizarModulo from './Paginas/VisualizarModulo';
 import { AuthProvider } from './Context/AuthContext';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PrivateRoute } from './Utils/PrivateRoute';
+import CrearModulo from './Paginas/CrearModulo';
 
 const theme = createTheme({
   palette: {
@@ -53,6 +53,14 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/crearModulo"
+              element={
+                <PrivateRoute>
+                  <CrearModulo />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
