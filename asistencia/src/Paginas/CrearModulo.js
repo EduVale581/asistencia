@@ -1,18 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-    Button, Checkbox, FormControlLabel,
-    FormGroup, Typography, AccordionDetails, AccordionSummary,
-    Accordion, Autocomplete, TextField, Box, Grid, Divider, Stack
+    Button,
+    Checkbox,
+    FormControlLabel,
+    FormGroup,
+    Typography,
+    AccordionDetails,
+    AccordionSummary,
+    Accordion,
+    Autocomplete,
+    TextField,
+    Box,
+    Grid,
+    Divider,
+    Stack
 }
     from '@mui/material';
 
 import { db } from '../Utils/firebase'
 import { collection, addDoc } from "firebase/firestore";
+import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from "react-router-dom"
+
 
 
 const CrearModulo = () => {
 
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+    console.log(currentUser)
     const [nombreModulo, setNombreModulo] = useState('');
     const [codigoModulo, setCodigoModulo] = useState('');
     const [fechaInicio, setFechaInicio] = useState('');
@@ -55,7 +72,8 @@ const CrearModulo = () => {
                 fechaInicio: fechaInicio,
                 fechaTermino: fechaTermino,
                 carrera: carrera,
-                horario: horario
+                horario: horario,
+                idProfesor: currentUser.uid
             });
         } catch (error) {
             console.log(error);
@@ -81,6 +99,12 @@ const CrearModulo = () => {
         }
     }
 
+    useEffect(() => {
+        if (currentUser.tipoUsuario !== "Profesor") {
+            navigate("/")
+
+        }
+    }, [currentUser.tipoUsuario]);
     return (
         <>
             <Stack spacing={2} style={{ marginTop: "50px", marginRight: "50px" }}>

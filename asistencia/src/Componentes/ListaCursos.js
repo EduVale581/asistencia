@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +10,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 export default function ListaCursos() {
-    const [check, setCheck] = useState(false);
     const lista = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     return (
         <Box sx={{ width: "60%", marginLeft: " 25%" }}>

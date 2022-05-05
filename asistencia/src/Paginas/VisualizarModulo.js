@@ -1,13 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import ListaCursos from '../Componentes/ListaCursos'
 import NavbarInicio from '../Componentes/NavbarInicio';
 import Stack from '@mui/material/Stack';
 import {
-    Button, Typography, Box } from '@mui/material';
-import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
+    Button,
+    Typography,
+    Box
+} from '@mui/material';
+import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from "react-router-dom"
 
 
 export default function VisualizarModulo() {
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (currentUser.tipoUsuario !== "Profesor") {
+            navigate("/")
+
+        }
+    }, [currentUser.tipoUsuario]);
     return (
         <div>
             <NavbarInicio navBarActivo="Módulos" />
@@ -16,15 +28,15 @@ export default function VisualizarModulo() {
                     <Typography component="div" gutterBottom style={{ color: "#A61F38", fontSize: "30px" }}>
                         Gestión de proyectos tecnológicos
                     </Typography>
-                    <Button style={{marginLeft: "30%"}}>
+                    <Button style={{ marginLeft: "30%" }}>
                         Volver
                     </Button>
-                    
+
 
                 </Stack>
             </Box>
             <ListaCursos />
-            
+
         </div >
     )
 }
