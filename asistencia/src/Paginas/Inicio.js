@@ -17,6 +17,7 @@ import {
 } from '@mui/material/';
 import { useNavigate } from "react-router-dom"
 import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
+import CrearModulo from './CrearModulo';
 
 import AddIcon from "@mui/icons-material/Add";
 
@@ -51,6 +52,7 @@ export default function Inicio() {
                         <Grid item>
                             <Button
                                 variant="contained"
+                                onClick={() => { navigate('/crearModulo') }}
                             >
                                 <AddIcon /> Agregar Módulo
                             </Button>

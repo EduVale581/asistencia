@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PrivateRoute } from './Utils/PrivateRoute';
 import CrearModulo from './Paginas/CrearModulo';
+import VisualizarModulo from './Paginas/VisualizarModulo';
 
 const theme = createTheme({
   palette: {
@@ -44,6 +45,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/login" element={<Login />} />
             <Route
               path="/modulos"
               element={
@@ -52,7 +54,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/login" element={<Login />} />
             <Route
               path="/crearModulo"
               element={
