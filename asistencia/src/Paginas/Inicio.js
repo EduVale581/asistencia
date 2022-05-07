@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
 import {
@@ -17,17 +17,50 @@ import {
 } from '@mui/material/';
 import { useNavigate } from "react-router-dom"
 import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
+import { db } from '../Utils/firebase';
+import { collection, query, where, onSnapshot, getDocs } from "firebase/firestore";
+import { semestreActual } from '../Utils/funciones';
 
 import AddIcon from "@mui/icons-material/Add";
 
 
 export default function Inicio() {
     const [asisAlumno, setAsis] = useState(false);
+
+
+    const semestre = semestreActual();
     const { currentUser } = useAuth();
 
     const [modulos, setModulos] = useState([]);
+    const [cargandoModulos, setCargandoModulos] = useState(false);
     const navigate = useNavigate();
     const handleClose = () => setAsis(false);
+
+
+
+    useEffect(() => {
+        async function obtenerModulos() {
+            console.log(currentUser)
+            const q = query(collection(db, "modulos"), where("idProfesor", "==", localStorage.getItem("ID")), where("semestre", "==", semestre));
+            const querySnapshot = await getDocs(q);
+            const modulosAux = [];
+            querySnapshot.forEach((doc) => {
+                modulosAux.push({ id: doc.id, ...doc.data() })
+            });
+
+            setModulos(modulosAux)
+            setCargandoModulos(true);
+
+        }
+        obtenerModulos()
+
+
+
+
+
+
+
+    }, [])
 
 
     return (
@@ -61,7 +94,7 @@ export default function Inicio() {
                 )}
 
                 <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {Array.from(Array(6)).map((_, index) => (
+                    {cargandoModulos && modulos.map((moduloEleccion, index) => (
                         <Grid item xs={2} sm={4} md={4} key={index}>
                             <Card sx={{ height: 300 }}>
 
@@ -69,7 +102,7 @@ export default function Inicio() {
                                     <CardActions
                                         onClick={() => {
                                             if (currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor") {
-                                                navigate("/modulos");
+                                                navigate("/modulos/" + moduloEleccion.id);
                                             } else {
                                                 setAsis(true);
                                             }

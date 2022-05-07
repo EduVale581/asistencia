@@ -21,7 +21,8 @@ import {
 import { db } from '../Utils/firebase'
 import { collection, addDoc } from "firebase/firestore";
 import { useAuth } from '../Context/AuthContext';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { semestreActual } from '../Utils/funciones';
 
 
 
@@ -29,7 +30,7 @@ const CrearModulo = () => {
 
     const { currentUser } = useAuth();
     const navigate = useNavigate();
-    console.log(currentUser)
+    const semestre = semestreActual();
     const [nombreModulo, setNombreModulo] = useState('');
     const [codigoModulo, setCodigoModulo] = useState('');
     const [fechaInicio, setFechaInicio] = useState('');
@@ -73,7 +74,10 @@ const CrearModulo = () => {
                 fechaTermino: fechaTermino,
                 carrera: carrera,
                 horario: horario,
-                idProfesor: currentUser.uid
+                idProfesor: currentUser.uid,
+                semestre: semestre,
+                estudiantes: []
+
             });
         } catch (error) {
             console.log(error);
