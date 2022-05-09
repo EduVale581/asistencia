@@ -93,6 +93,7 @@ export default function Login() {
                         {error !== "" && (<Alert severity='error'>{error}</Alert>)}
 
                         <LoadingButton
+                            autoFocus
                             loading={loading}
                             fullWidth
                             style={{ marginTop: "40%" }}
