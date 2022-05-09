@@ -9,7 +9,12 @@ import {
     IconButton,
     Tabs,
     Tab,
-    Skeleton
+    Skeleton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Stack,
 } from '@mui/material';
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +22,8 @@ import { db } from '../Utils/firebase';
 import { doc, getDoc } from "firebase/firestore";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ModalNuevoEstudiantes from '../Componentes/ModalNuevoEstudiantes';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -62,6 +69,7 @@ export default function VisualizarModulo() {
 
     const [estudiantes, setEstudiantes] = useState([]);
 
+    const [iniciarAsistencia, setIniciarAsistencia] = useState(false);
 
 
     const handleChangeTabs = (event, newValue) => {
@@ -161,8 +169,75 @@ export default function VisualizarModulo() {
                                 </Grid>
 
                             </TabPanel>
+
                             <TabPanel value={valueTabs} index={1}>
-                                Item Two
+                                <Grid container>
+                                    <Grid item xs={12} md={12}>
+                                        {/* <Button
+                                            variant='contained'
+                                            onClick={() => {
+                                                setMostrarNuevoEstudiante(true)
+                                            }}
+                                        >
+                                            Agregar Estudiantes
+                                        </Button> */}
+                                        {
+                                            iniciarAsistencia?
+                                            (<Button
+                                                variant='contained'
+                                                onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
+                                            >
+                                                Finalizar asistencia
+                                            </Button>)
+                                            :
+                                            (<Button
+                                                variant='contained'
+                                                onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
+                                            >
+                                                Tomar asistencia
+                                            </Button>)
+                                        }
+                                        
+
+                                    </Grid>
+
+                                    <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
+                                        {/* <ListaCursos estudiantes={estudiantes} /> */}
+                                        {
+                                            estudiantes.map((estudiante, index)=>{
+                                                return (
+                                                    <ListItem key={"listaEstudiantes_" + index}
+                                                        /* secondaryAction={
+                                                            <IconButton edge="end" aria-label="delete" >
+                                                                <Button>Presente</Button>
+                                                            </IconButton>
+                                                        } */
+                                                    >
+                                                        <ListItemIcon >
+                                                            <AccountCircleIcon />
+                                                        </ListItemIcon>
+                                                        <Stack spacing={0} width="100%" marginLeft="5%">
+                                                            <ListItemText primary={estudiante.nombre} style={{ color: "#A61F38" }} />
+                                                            <ListItemText primary={estudiante.correo} color="GrayText" />
+                                                        </Stack>
+                                                        {
+                                                            iniciarAsistencia ? (
+                                                                estudiante.presente ?
+                                                                (<Button variant='contained' color="success">Presente</Button>)
+                                                                :
+                                                                (<Button variant='outlined' color="error">Ausente</Button>)
+                                                            ):(null)
+                                                        }
+
+                                                    </ListItem>
+                                                )
+                                            })
+                                        }
+                                    </Grid>
+
+
+
+                                </Grid>
                             </TabPanel>
                         </Box>
                     </div>
