@@ -110,7 +110,7 @@ export default function Inicio() {
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <VisualizarModuloEstudiante />
+                        <VisualizarModuloEstudiante id={"t3BlnHq9FMUXR0PyUU3y"} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>
