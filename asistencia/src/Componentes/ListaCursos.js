@@ -16,7 +16,6 @@ export default function ListaCursos(props) {
     return (
         <List dense={true}>
             {estudiantes && estudiantes.map((elemento, index) => {
-                const id = elemento;
                 return (
                     <ListItem key={"listaEstudiantes_" + index}
                         secondaryAction={

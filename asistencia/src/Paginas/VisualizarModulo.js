@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ListaCursos from '../Componentes/ListaCursos'
 import NavbarInicio from '../Componentes/NavbarInicio';
-import Stack from '@mui/material/Stack';
 import {
     Button,
     Typography,
@@ -10,6 +9,7 @@ import {
     IconButton,
     Tabs,
     Tab,
+    Skeleton
 } from '@mui/material';
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate, useParams } from "react-router-dom";
@@ -82,7 +82,7 @@ export default function VisualizarModulo() {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                setModuloCargado(true)
+
                 if (docSnap.data().estudiantes) {
                     setEstudiantes(docSnap.data().estudiantes);
                 }
@@ -90,6 +90,7 @@ export default function VisualizarModulo() {
                     setEstudiantes([]);
 
                 }
+                setModuloCargado(true)
                 setModuloObtenido(docSnap.data())
 
             } else {
@@ -103,63 +104,74 @@ export default function VisualizarModulo() {
 
     return (
         <div>
-            <NavbarInicio navBarActivo="Módulos" />
-            <Box sx={{ marginLeft: "20%", borderBottom: "1px solid", width: "60%", marginTop: "3%" }}>
-                <Grid container>
-                    <Grid item xs={2} md={2}>
-                        <IconButton
-                            onClick={() => {
-                                navigate("/");
-                            }}
-                        >
-                            <ArrowBackIcon />
-                        </IconButton>
+            <NavbarInicio navBarActivo="Inicio" />
+            {
+                moduloCargado ? (
+                    <div>
 
-                    </Grid>
-                    <Grid item xs={10} md={10}>
-                        <Typography component="div" gutterBottom style={{ color: "#A61F38", fontSize: "30px" }}>
-                            {moduloObtenido && moduloObtenido.nombre}
-                        </Typography>
+                        <Box sx={{ marginLeft: "20%", borderBottom: "1px solid", width: "60%", marginTop: "3%" }}>
+                            <Grid container>
+                                <Grid item xs={2} md={2}>
+                                    <IconButton
+                                        onClick={() => {
+                                            navigate("/");
+                                        }}
+                                    >
+                                        <ArrowBackIcon />
+                                    </IconButton>
 
-                    </Grid>
-                </Grid>
-            </Box>
+                                </Grid>
+                                <Grid item xs={10} md={10}>
+                                    <Typography component="div" gutterBottom style={{ color: "#A61F38", fontSize: "30px" }}>
+                                        {moduloObtenido && moduloObtenido.nombre}
+                                    </Typography>
 
-            <Box sx={{ marginLeft: "20%", width: '60%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={valueTabs} onChange={handleChangeTabs}>
-                        <Tab label="Lista Estudiantes" {...a11yProps(0)} />
-                        <Tab label="Asistencias" {...a11yProps(1)} />
-                    </Tabs>
-                </Box>
-                <TabPanel value={valueTabs} index={0}>
-                    <Grid container>
-                        <Grid item xs={12} md={12}>
-                            <Button
-                                variant='contained'
-                                onClick={() => {
-                                    setMostrarNuevoEstudiante(true)
-                                }}
-                            >
-                                Agregar Estudiantes
-                            </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
 
-                        </Grid>
+                        <Box sx={{ marginLeft: "20%", width: '60%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs value={valueTabs} onChange={handleChangeTabs}>
+                                    <Tab label="Lista Estudiantes" {...a11yProps(0)} />
+                                    <Tab label="Asistencias" {...a11yProps(1)} />
+                                </Tabs>
+                            </Box>
+                            <TabPanel value={valueTabs} index={0}>
+                                <Grid container>
+                                    <Grid item xs={12} md={12}>
+                                        <Button
+                                            variant='contained'
+                                            onClick={() => {
+                                                setMostrarNuevoEstudiante(true)
+                                            }}
+                                        >
+                                            Agregar Estudiantes
+                                        </Button>
 
-                        <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
-                            <ListaCursos estudiantes={estudiantes} />
+                                    </Grid>
 
-                        </Grid>
+                                    <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
+                                        <ListaCursos estudiantes={estudiantes} />
+
+                                    </Grid>
 
 
 
-                    </Grid>
+                                </Grid>
 
-                </TabPanel>
-                <TabPanel value={valueTabs} index={1}>
-                    Item Two
-                </TabPanel>
-            </Box>
+                            </TabPanel>
+                            <TabPanel value={valueTabs} index={1}>
+                                Item Two
+                            </TabPanel>
+                        </Box>
+                    </div>
+
+                ) : (
+                    <Skeleton variant="rectangular" width="100%" height={500} />
+                )
+            }
+
 
             {mostrarModalNuevoEstudiante && (
                 <ModalNuevoEstudiantes
@@ -167,7 +179,6 @@ export default function VisualizarModulo() {
                     setOpen={setMostrarNuevoEstudiante}
                     documento={moduloObtenido}
                     id={id}
-                    moduloObtenido={moduloObtenido}
                     setModuloObtenido={setModuloObtenido}
                     setEstudiantes={setEstudiantes}
                 />

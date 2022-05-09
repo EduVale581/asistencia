@@ -22,7 +22,7 @@ import { LoadingButton } from '@mui/lab';
 const fileTypes = ["PY"];
 
 export default function ModalNuevoEstudiantes(props) {
-    const { open, setOpen, documento, id, setEstudiantes, moduloObtenido, setModuloObtenido } = props
+    const { open, setOpen, documento, id, setEstudiantes, setModuloObtenido } = props
 
     const [tipoAgregar, setTipoAgregar] = useState('Manual');
 
@@ -81,7 +81,6 @@ export default function ModalNuevoEstudiantes(props) {
                         estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
                     }
                     documento.estudiantes = estudiantes;
-                    console.log(documento)
 
                     setDoc(doc(db, "modulos", id), documento).then(async () => {
                         const docRef = doc(db, "modulos", id);
