@@ -52,6 +52,44 @@ function a11yProps(index) {
     };
 }
 
+function fechaHoy(){
+    var hoy = new Date();
+    let diaSemana = '';
+
+    if(hoy.getDay()===1){
+        diaSemana = 'Lunes'
+    }
+    if(hoy.getDay()===2){
+        diaSemana = 'Martes'
+    }
+    if(hoy.getDay()===3){
+        diaSemana = 'Miércoles'
+    }
+    if(hoy.getDay()===4){
+        diaSemana = 'Jueves'
+    }
+    if(hoy.getDay()===5){
+        diaSemana = 'Viernes'
+    }
+    if(hoy.getDay()===6){
+        diaSemana = 'Sábado'
+    }
+    if(hoy.getDay()===0){
+        diaSemana = 'Domingo'
+    }
+    return{
+        dia: hoy.getDate(),
+        mes: hoy.getMonth()+1,
+        anio: hoy.getFullYear(),
+        diaSemana: diaSemana,
+        hora: hoy.getHours(),
+        minutos: hoy.getMinutes(),
+        segundos: hoy.getSeconds(),
+    }
+
+    
+}
+
 
 
 export default function VisualizarModulo() {
@@ -70,8 +108,8 @@ export default function VisualizarModulo() {
     const [estudiantes, setEstudiantes] = useState([]);
 
     const [iniciarAsistencia, setIniciarAsistencia] = useState(false);
-
-
+    const [fechaActual, setFechaActual] = useState(fechaHoy());
+    
     const handleChangeTabs = (event, newValue) => {
         setValueTabs(newValue);
     };
@@ -83,6 +121,10 @@ export default function VisualizarModulo() {
         }
     }, [currentUser.tipoUsuario]);
 
+
+    const validarFecha = () =>{
+        return false;        
+    }
 
     useEffect(() => {
         async function obtenerDocumento() {
@@ -181,8 +223,11 @@ export default function VisualizarModulo() {
                                         >
                                             Agregar Estudiantes
                                         </Button> */}
+                                        
+                                        <Button onClick={()=>{console.log(fechaActual)}}>fecha actual</Button>
+
                                         {
-                                            iniciarAsistencia?
+                                            iniciarAsistencia ?
                                             (<Button
                                                 variant='contained'
                                                 onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
@@ -197,6 +242,8 @@ export default function VisualizarModulo() {
                                                 Tomar asistencia
                                             </Button>)
                                         }
+                                        
+                                        
                                         
 
                                     </Grid>
