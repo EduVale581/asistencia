@@ -16,10 +16,11 @@ import {
 } from '@mui/material/';
 import { FileUploader } from "react-drag-drop-files";
 import DeleteIcon from '@mui/icons-material/Delete';
+import * as XLSX from "xlsx";
 import { db } from '../Utils/firebase';
 import { collection, addDoc, query, where, getDocs, setDoc, doc, getDoc } from "firebase/firestore";
 import { LoadingButton } from '@mui/lab';
-const fileTypes = ["PY"];
+const fileTypes = ["XLSX"];
 
 export default function ModalNuevoEstudiantes(props) {
     const { open, setOpen, documento, id, setEstudiantes, setModuloObtenido } = props
@@ -29,6 +30,9 @@ export default function ModalNuevoEstudiantes(props) {
     const [cargando, setCargando] = useState(false);
 
     const [archivo, setArchivo] = useState(null);
+
+    const [elementosCopiados, setElementosCopiados] = useState(0);
+    const [elementosNOCopiados, setElementosNOCopiados] = useState(0);
 
     const [nombreCompletoAlumno, setNombreCompletoAlumno] = useState("");
     const [correoAlumno, setCorreoAlumno] = useState("");
@@ -55,8 +59,22 @@ export default function ModalNuevoEstudiantes(props) {
     };
 
     const handleChangeArchivo = (file) => {
-
+      console.log(file);
+      if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
         setArchivo(file);
+      }
+
+
+
+
+
+    };
+
+    const descargarPlantilla = () => {
+      let worksheet = XLSX.utils.aoa_to_sheet([['Nombre',	'Apellido(s)', 'Dirección de correo']]);
+      let new_workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(new_workbook, worksheet, "Sheet1");
+      XLSX.writeFile(new_workbook, "PlantillaAlumnos.xlsx");
 
     };
 
@@ -203,6 +221,175 @@ export default function ModalNuevoEstudiantes(props) {
 
 
         }
+        else{
+          try {
+            setCargando(true);
+            let file = archivo;
+            let reader = new FileReader();
+
+            reader.onload = async function (e) {
+                let data = new Uint8Array(e.target.result);
+                let workbook = XLSX.read(data, { type: "array" });
+                let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                let sheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                sheet.forEach(async (item, i) => {
+                  if (i===0){
+
+                  }
+                  else{
+                    console.log(Object.keys(item).length);
+                    if (typeof item === 'object' && Object.keys(item).length === 3 && item[0] !==""){
+                      let correoAlumno = item[2];
+                      let nombreCompletoAlumno = String(item[0]).toUpperCase() + " " + String(item[1]).toUpperCase();
+                      const q = query(collection(db, "estudiantes"), where("correo", "==", correoAlumno));
+                      const querySnapshot = await getDocs(q);
+                      let existe = false;
+                      querySnapshot.forEach((doc) => {
+                          existe = true;
+                      });
+                      if (existe) {
+                        let estudiantes = []
+                        if (documento.estudiantes) {
+                            estudiantes = documento.estudiantes
+                            let existeAlumnoModulo = estudiantes.filter(e => e.correo === correoAlumno)[0];
+                            if (existeAlumnoModulo) {
+
+                            }
+                            else {
+                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                            }
+                            documento.estudiantes = estudiantes;
+
+                            setDoc(doc(db, "modulos", id), documento).then(async () => {
+                                const docRef = doc(db, "modulos", id);
+                                const docSnap = await getDoc(docRef);
+
+                                if (docSnap.exists()) {
+                                    if (docSnap.data().estudiantes) {
+                                        setEstudiantes(docSnap.data().estudiantes);
+                                    }
+                                    else {
+                                        setEstudiantes([]);
+
+                                    }
+                                    setModuloObtenido(docSnap.data())
+
+                                } else {
+                                }
+                            });
+
+
+
+                        }
+                        else {
+                            estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                            documento.estudiantes = estudiantes;
+                            setDoc(doc(db, "modulos", id), documento).then(async () => {
+                                const docRef = doc(db, "modulos", id);
+                                const docSnap = await getDoc(docRef);
+
+                                if (docSnap.exists()) {
+                                    if (docSnap.data().estudiantes) {
+                                        setEstudiantes(docSnap.data().estudiantes);
+                                    }
+                                    else {
+                                        setEstudiantes([]);
+
+                                    }
+                                    setModuloObtenido(docSnap.data())
+
+                                } else {
+                                }
+                            });
+
+                        }
+
+                    }
+                    else {
+                        addDoc(collection(db, "estudiantes"), {
+                            correo: correoAlumno,
+                            nombre: String(nombreCompletoAlumno).toUpperCase(),
+                            numeroMatricula: numeroMatricula
+                        }).then(() => {
+                            let estudiantes = []
+                            if (documento.estudiantes) {
+                                estudiantes = documento.estudiantes
+                                let existeAlumnoModulo = estudiantes.filter(e => e.correo === correoAlumno)[0];
+                                if (existeAlumnoModulo) {
+
+                                }
+                                else {
+                                    estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                                }
+                                documento.estudiantes = estudiantes;
+
+                                setDoc(doc(db, "modulos", id), documento).then(async () => {
+                                    const docRef = doc(db, "modulos", id);
+                                    const docSnap = await getDoc(docRef);
+
+                                    if (docSnap.exists()) {
+                                        if (docSnap.data().estudiantes) {
+                                            setEstudiantes(docSnap.data().estudiantes);
+                                        }
+                                        else {
+                                            setEstudiantes([]);
+
+                                        }
+                                        setModuloObtenido(docSnap.data())
+
+                                    } else {
+                                    }
+                                });
+
+
+
+                            }
+                            else {
+                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                                documento.estudiantes = estudiantes;
+                                setDoc(doc(db, "modulos", id), documento).then(async () => {
+                                    const docRef = doc(db, "modulos", id);
+                                    const docSnap = await getDoc(docRef);
+
+                                    if (docSnap.exists()) {
+                                        if (docSnap.data().estudiantes) {
+                                            setEstudiantes(docSnap.data().estudiantes);
+                                        }
+                                        else {
+                                            setEstudiantes([]);
+
+                                        }
+                                        setModuloObtenido(docSnap.data())
+
+                                    } else {
+                                    }
+                                });
+
+                            }
+
+                        })
+
+                    }
+
+
+
+                  }
+
+
+                }
+
+
+              });
+            }.bind(this);
+            reader.readAsArrayBuffer(file);
+            setCargando(false);
+            setOpen(false);
+          } catch (exception) {
+            setCargando(false);
+          }
+
+        }
     }
 
     return (
@@ -256,7 +443,7 @@ export default function ModalNuevoEstudiantes(props) {
                             </>
                         ) : (
                             <>
-                                <Button onClick={handleClose} variant="contained" autoFocus>
+                                <Button onClick={descargarPlantilla} variant="contained" autoFocus>
                                     Descargar Plantilla
                                 </Button>
 
