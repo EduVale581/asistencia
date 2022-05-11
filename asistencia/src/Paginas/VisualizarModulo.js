@@ -10,11 +10,6 @@ import {
     Tabs,
     Tab,
     Skeleton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Stack,
 } from '@mui/material';
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate, useParams } from "react-router-dom";
@@ -24,6 +19,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ModalNuevoEstudiantes from '../Componentes/ModalNuevoEstudiantes';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListaAsistencia from '../Componentes/ListaAsistencia';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -52,44 +48,6 @@ function a11yProps(index) {
     };
 }
 
-function fechaHoy(){
-    var hoy = new Date();
-    let diaSemana = '';
-
-    if(hoy.getDay()===1){
-        diaSemana = 'Lunes'
-    }
-    if(hoy.getDay()===2){
-        diaSemana = 'Martes'
-    }
-    if(hoy.getDay()===3){
-        diaSemana = 'Miércoles'
-    }
-    if(hoy.getDay()===4){
-        diaSemana = 'Jueves'
-    }
-    if(hoy.getDay()===5){
-        diaSemana = 'Viernes'
-    }
-    if(hoy.getDay()===6){
-        diaSemana = 'Sábado'
-    }
-    if(hoy.getDay()===0){
-        diaSemana = 'Domingo'
-    }
-    return{
-        dia: hoy.getDate(),
-        mes: hoy.getMonth()+1,
-        anio: hoy.getFullYear(),
-        diaSemana: diaSemana,
-        hora: hoy.getHours(),
-        minutos: hoy.getMinutes(),
-        segundos: hoy.getSeconds(),
-    }
-
-    
-}
-
 
 
 export default function VisualizarModulo() {
@@ -107,8 +65,7 @@ export default function VisualizarModulo() {
 
     const [estudiantes, setEstudiantes] = useState([]);
 
-    const [iniciarAsistencia, setIniciarAsistencia] = useState(false);
-    const [fechaActual, setFechaActual] = useState(fechaHoy());
+   
     
     const handleChangeTabs = (event, newValue) => {
         setValueTabs(newValue);
@@ -187,6 +144,7 @@ export default function VisualizarModulo() {
                                     <Tab label="Asistencias" {...a11yProps(1)} />
                                 </Tabs>
                             </Box>
+
                             <TabPanel value={valueTabs} index={0}>
                                 <Grid container>
                                     <Grid item xs={12} md={12}>
@@ -213,77 +171,8 @@ export default function VisualizarModulo() {
                             </TabPanel>
 
                             <TabPanel value={valueTabs} index={1}>
-                                <Grid container>
-                                    <Grid item xs={12} md={12}>
-                                        {/* <Button
-                                            variant='contained'
-                                            onClick={() => {
-                                                setMostrarNuevoEstudiante(true)
-                                            }}
-                                        >
-                                            Agregar Estudiantes
-                                        </Button> */}
-                                        
-                                        <Button onClick={()=>{console.log(fechaActual)}}>fecha actual</Button>
-
-                                        {
-                                            iniciarAsistencia ?
-                                            (<Button
-                                                variant='contained'
-                                                onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
-                                            >
-                                                Finalizar asistencia
-                                            </Button>)
-                                            :
-                                            (<Button
-                                                variant='contained'
-                                                onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
-                                            >
-                                                Tomar asistencia
-                                            </Button>)
-                                        }
-                                        
-                                        
-                                        
-
-                                    </Grid>
-
-                                    <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
-                                        {/* <ListaCursos estudiantes={estudiantes} /> */}
-                                        {
-                                            estudiantes.map((estudiante, index)=>{
-                                                return (
-                                                    <ListItem key={"listaEstudiantes_" + index}
-                                                        /* secondaryAction={
-                                                            <IconButton edge="end" aria-label="delete" >
-                                                                <Button>Presente</Button>
-                                                            </IconButton>
-                                                        } */
-                                                    >
-                                                        <ListItemIcon >
-                                                            <AccountCircleIcon />
-                                                        </ListItemIcon>
-                                                        <Stack spacing={0} width="100%" marginLeft="5%">
-                                                            <ListItemText primary={estudiante.nombre} style={{ color: "#A61F38" }} />
-                                                            <ListItemText primary={estudiante.correo} color="GrayText" />
-                                                        </Stack>
-                                                        {
-                                                            iniciarAsistencia ? (
-                                                                estudiante.presente ?
-                                                                (<Button variant='contained' color="success">Presente</Button>)
-                                                                :
-                                                                (<Button variant='outlined' color="error">Ausente</Button>)
-                                                            ):(null)
-                                                        }
-
-                                                    </ListItem>
-                                                )
-                                            })
-                                        }
-                                    </Grid>
-
-
-
+                                <Grid container>                          
+                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido}/>
                                 </Grid>
                             </TabPanel>
                         </Box>
