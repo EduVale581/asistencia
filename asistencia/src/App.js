@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PrivateRoute } from './Utils/PrivateRoute';
 import CrearModulo from './Paginas/CrearModulo';
 import VisualizarModulo from './Paginas/VisualizarModulo';
+import Historial from './Paginas/Historial'
 
 const theme = createTheme({
   palette: {
@@ -59,6 +60,22 @@ function App() {
               element={
                 <PrivateRoute>
                   <CrearModulo />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/crearModulo"
+              element={
+                <PrivateRoute>
+                  <CrearModulo />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Historial"
+              element={
+                <PrivateRoute>
+                  <Historial />
                 </PrivateRoute>
               }
             />
