@@ -1,35 +1,39 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
+import {
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Stack,
+} from '@mui/material/';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function ListaCursos() {
-    const lista = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+export default function ListaCursos(props) {
+    const { estudiantes } = props;
     return (
-        <Box sx={{ width: "60%", marginLeft: " 25%" }}>
-            <List dense={true}>
-                {lista.map((elemento) => {
-                    const id = elemento;
-                    return (
-                        <ListItem key={id} >
-                            <ListItemIcon >
-                                <AccountCircleIcon />
-                            </ListItemIcon>
-                            <Stack spacing={0} width="60%" marginLeft="5%">
-                                <ListItemText primary="Alumno 1" style={{ color: "#A61F38" }} />
-                                <ListItemText primary="alumno@alumno.utalca.cl" color="GrayText" />
-                            </Stack>
-                            <Checkbox checked={false} sx={{ '& .MuiSvgIcon-root': { fontSize: 30 } }} />
-                        </ListItem>
-                    )
-                })}
-            </List>
-        </Box >
+        <List dense={true}>
+            {estudiantes && estudiantes.map((elemento, index) => {
+                return (
+                    <ListItem key={"listaEstudiantes_" + index}
+                        secondaryAction={
+                            <IconButton edge="end" aria-label="delete">
+                                <DeleteIcon />
+                            </IconButton>
+                        }
+                    >
+                        <ListItemIcon >
+                            <AccountCircleIcon />
+                        </ListItemIcon>
+                        <Stack spacing={0} width="100%" marginLeft="5%">
+                            <ListItemText primary={elemento.nombre} style={{ color: "#A61F38" }} />
+                            <ListItemText primary={elemento.correo} color="GrayText" />
+                        </Stack>
+                    </ListItem>
+                )
+            })}
+        </List>
     )
 }

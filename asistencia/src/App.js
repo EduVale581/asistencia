@@ -47,7 +47,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/modulos"
+              path="/modulos/:id"
               element={
                 <PrivateRoute>
                   <VisualizarModulo />
