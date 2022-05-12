@@ -9,7 +9,7 @@ import {
     IconButton,
     Tabs,
     Tab,
-    Skeleton
+    Skeleton,
 } from '@mui/material';
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +17,9 @@ import { db } from '../Utils/firebase';
 import { doc, getDoc } from "firebase/firestore";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ModalNuevoEstudiantes from '../Componentes/ModalNuevoEstudiantes';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListaAsistencia from '../Componentes/ListaAsistencia';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -62,8 +65,8 @@ export default function VisualizarModulo() {
 
     const [estudiantes, setEstudiantes] = useState([]);
 
-
-
+   
+    
     const handleChangeTabs = (event, newValue) => {
         setValueTabs(newValue);
     };
@@ -75,6 +78,10 @@ export default function VisualizarModulo() {
         }
     }, [currentUser.tipoUsuario]);
 
+
+    const validarFecha = () =>{
+        return false;        
+    }
 
     useEffect(() => {
         async function obtenerDocumento() {
@@ -137,6 +144,7 @@ export default function VisualizarModulo() {
                                     <Tab label="Asistencias" {...a11yProps(1)} />
                                 </Tabs>
                             </Box>
+
                             <TabPanel value={valueTabs} index={0}>
                                 <Grid container>
                                     <Grid item xs={12} md={12}>
@@ -161,8 +169,11 @@ export default function VisualizarModulo() {
                                 </Grid>
 
                             </TabPanel>
+
                             <TabPanel value={valueTabs} index={1}>
-                                Item Two
+                                <Grid container>                          
+                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido}/>
+                                </Grid>
                             </TabPanel>
                         </Box>
                     </div>
