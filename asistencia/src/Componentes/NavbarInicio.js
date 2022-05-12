@@ -14,6 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from '../Context/AuthContext';
 import { LoadingButton } from '@mui/lab';
+import { useNavigate } from "react-router-dom"
 
 
 export default function NavbarInicio(props) {
@@ -21,6 +22,7 @@ export default function NavbarInicio(props) {
     const { currentUser, logout } = useAuth();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
@@ -136,14 +138,18 @@ export default function NavbarInicio(props) {
                         <div style={{ height: "100%" }}>
                             <Button
 
-                                onClick={handleCloseNavMenu}
+                                onClick={() => {
+                                    navigate=("/");
+                                }}
                                 style={{ backgroundColor: "#661323", color: "white", height: "100%" }}
 
                             >
                                 Inicio
                             </Button>
                             <Button
-                                onClick={handleCloseNavMenu}
+                                onClick={() => {
+                                  navigate("/Historial");
+                                }}
                                 style={{ color: 'white', height: "100%" }}
                             >
                                 Módulos
@@ -153,7 +159,10 @@ export default function NavbarInicio(props) {
                     ) : (
                         <div>
                             <Button
-                                onClick={handleCloseNavMenu}
+
+                                onClick={() => {
+                                  navigate("/");
+                                }}
                                 sx={{ my: 2, color: 'white' }}
 
                             >
