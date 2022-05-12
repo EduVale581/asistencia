@@ -13,7 +13,7 @@ export default function VisualizarModuloEstudiante(props) {
     const [horario, setHorario] = useState([]);
     const deleteRef = doc(db, 'modulos', id);
     useEffect(()=>{
-      getDoc(deleteRef).then((snapshot) => {        
+      getDoc(deleteRef).then((snapshot) => {
         setNombreModulo(snapshot.data().nombre);
         setNombreProfesor(snapshot.data().profesor);
         setHorario(snapshot.data().horario);
@@ -39,10 +39,7 @@ export default function VisualizarModuloEstudiante(props) {
                       {h.diaSemana}
                   </Typography>
                   <Typography gutterBottom>
-                      {h.bloqueInicio}
-                  </Typography>
-                  <Typography gutterBottom>
-                      {h.bloqueTermino}
+                      {h.bloque}
                   </Typography>
                   <Typography gutterBottom >
                       {h.sala}

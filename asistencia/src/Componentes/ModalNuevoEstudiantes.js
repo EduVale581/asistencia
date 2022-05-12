@@ -18,7 +18,16 @@ import { FileUploader } from "react-drag-drop-files";
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as XLSX from "xlsx";
 import { db } from '../Utils/firebase';
-import { collection, addDoc, query, where, getDocs, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+  getDoc
+} from "firebase/firestore";
 import { LoadingButton } from '@mui/lab';
 const fileTypes = ["XLSX"];
 
@@ -59,7 +68,6 @@ export default function ModalNuevoEstudiantes(props) {
     };
 
     const handleChangeArchivo = (file) => {
-      console.log(file);
       if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
         setArchivo(file);
       }
@@ -96,7 +104,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                     }
                     else {
-                        estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                        estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                     }
                     documento.estudiantes = estudiantes;
 
@@ -124,7 +132,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                 }
                 else {
-                    estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                    estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                     documento.estudiantes = estudiantes;
                     setDoc(doc(db, "modulos", id), documento).then(async () => {
                         const docRef = doc(db, "modulos", id);
@@ -163,7 +171,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                         }
                         else {
-                            estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                            estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                         }
                         documento.estudiantes = estudiantes;
 
@@ -191,7 +199,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                     }
                     else {
-                        estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                        estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                         documento.estudiantes = estudiantes;
                         setDoc(doc(db, "modulos", id), documento).then(async () => {
                             const docRef = doc(db, "modulos", id);
@@ -238,7 +246,6 @@ export default function ModalNuevoEstudiantes(props) {
 
                   }
                   else{
-                    console.log(Object.keys(item).length);
                     if (typeof item === 'object' && Object.keys(item).length === 3 && item[0] !==""){
                       let correoAlumno = item[2];
                       let nombreCompletoAlumno = String(item[0]).toUpperCase() + " " + String(item[1]).toUpperCase();
@@ -257,7 +264,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                             }
                             else {
-                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                             }
                             documento.estudiantes = estudiantes;
 
@@ -283,7 +290,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                         }
                         else {
-                            estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                            estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                             documento.estudiantes = estudiantes;
                             setDoc(doc(db, "modulos", id), documento).then(async () => {
                                 const docRef = doc(db, "modulos", id);
@@ -320,7 +327,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                                 }
                                 else {
-                                    estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                                    estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                                 }
                                 documento.estudiantes = estudiantes;
 
@@ -346,7 +353,7 @@ export default function ModalNuevoEstudiantes(props) {
 
                             }
                             else {
-                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno })
+                                estudiantes.push({ nombre: String(nombreCompletoAlumno).toUpperCase(), correo: correoAlumno, presente:false })
                                 documento.estudiantes = estudiantes;
                                 setDoc(doc(db, "modulos", id), documento).then(async () => {
                                     const docRef = doc(db, "modulos", id);
