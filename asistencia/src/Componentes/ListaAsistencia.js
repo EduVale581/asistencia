@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
 import {
     Button,
-    Typography,
-    Box,
     Grid,
-    IconButton,
-    Tabs,
-    Tab,
-    Skeleton,
-    List,
     ListItem,
     ListItemIcon,
     ListItemText,
@@ -63,14 +56,93 @@ const ListaAsistencia = ({estudiantes, modulo}) => {
 
     const tomarAsistencia = () =>{
         const hoy = fechaActual.diaSemana;
+        const hora = fechaActual.hora;
+        const minutos = fechaActual.minutos;
+
         
-        modulo.horario.map((bloque) =>{
+        
+        modulo.horario.map((horario) =>{
             /* console.log({hoy})
             console.log(bloque.diaSemana); */
-            if(bloque.diaSemana === hoy && estado!= true){
-                if(bloque.diaSemana)
-                console.log('entre')
-                setEstado(true);
+            if(horario.diaSemana === hoy && estado!= true){
+                console.log('Es el dia correcto: '+hoy)
+                console.log({hora, minutos});
+                if(horario.bloque === 'Bloque 1'){
+                    if((hora >=8 && minutos >= 30) || (hora <=9 && minutos <= 30) ){
+                        console.log('Bloque 1')
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 2'){
+                    if((hora >=9 && minutos >= 40) || (hora <=10 && minutos <= 40) ){
+                        console.log('Bloque 2')
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 3'){
+                    console.log('Bloque 3')
+                    if((hora >=10 && minutos >= 50) || (hora <=11 && minutos <= 50)){
+                        console.log('Dentro del bloque 3')
+                        setEstado(true);
+                    }
+                    
+                }
+                if(horario.bloque === 'Bloque 4'){
+                    console.log('Bloque 4')
+                    if((hora >=12 && minutos) >= 0 || (hora <=13 && minutos <= 0)){
+                        console.log('Dentro del bloque 4')
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 5'){
+                    console.log('Bloque 5')
+                    if((hora >=13 && minutos >= 10) || (hora <=14 && minutos <= 10) ){
+                        console.log('Entre en bloque 5')
+                        setEstado(true);
+                    }    
+                }
+                if(horario.bloque === 'Bloque 6'){
+                    console.log('Bloque 6')
+                    if( (hora >=14 && minutos >= 20) || (hora <=15 && minutos <= 20) ){
+                        console.log('bloque 6 rdy')
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 7'){
+                    console.log('bloque 7')
+                    if((hora >=15 && minutos >= 30) || (hora <=16 && minutos <= 30)){
+                        console.log('Dentro del bloque 7')
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 8'){
+                    console.log('bloque 8');
+                    if((hora >=16 && minutos >= 40) || (hora <=17 && minutos <= 40)){
+                        console.log('Dentro del bloque 8');
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 9'){
+                    console.log('Bloque')
+                    if( (hora >=17 && minutos >= 50) || (hora <=18 && minutos <= 50)){
+                        console.log('bloque 9');
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 10'){
+                    console.log('bloque 10')
+                    if((hora >=19 && minutos >= 0) || (hora <=20 && minutos <= 0)){
+                        console.log('Dentro del bloque 10');
+                        setEstado(true);
+                    }
+                }
+                if(horario.bloque === 'Bloque 11'){
+                    console.log('bloque 11');
+                    if((hora >=20 && minutos >= 10) || (hora <=21 && minutos <= 10)){
+                        console.log('Dentro del bloque 11');
+                        setEstado(true);
+                    }
+                }
             }
         })
     }
