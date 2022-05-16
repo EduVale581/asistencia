@@ -96,30 +96,81 @@ export default function NavbarInicio(props) {
                         {navBarActivo === "Inicio" ? (
                             <div>
                                 <MenuItem
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => {
+                                        navigate("/");
+                                    }}
                                 >
                                     <Typography textAlign="center" color="primary">Inicio</Typography>
                                 </MenuItem>
                                 <MenuItem
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => {
+                                        navigate("/Historial");
+                                    }}
                                 >
-                                    <Typography textAlign="center">Cursos</Typography>
+                                    <Typography textAlign="center">Módulos</Typography>
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        navigate("/Perfil");
+                                    }}
+                                >
+                                    <Typography textAlign="center" >Perfil</Typography>
                                 </MenuItem>
                             </div>
 
                         ) : (
-                            <div>
-                                <MenuItem
-                                    onClick={handleCloseNavMenu}
-                                >
-                                    <Typography textAlign="center" >Inicio</Typography>
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleCloseNavMenu}
-                                >
-                                    <Typography textAlign="center" color="primary">Cursos</Typography>
-                                </MenuItem>
-                            </div>
+                            navBarActivo === "Modulos" ? (
+                                <div>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/");
+                                        }}
+                                    >
+                                        <Typography textAlign="center" >Inicio</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/Historial");
+                                        }}
+                                    >
+                                        <Typography textAlign="center" color="primary">Módulos</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/Perfil");
+                                        }}
+                                    >
+                                        <Typography textAlign="center">Perfil</Typography>
+                                    </MenuItem>
+                                </div>
+
+                            ) : (
+                                <div>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/Perfil");
+                                        }}
+                                    >
+                                        <Typography textAlign="center" >Inicio</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/Historial");
+                                        }}
+                                    >
+                                        <Typography textAlign="center">Módulos</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate("/Perfil");
+                                        }}
+                                    >
+                                        <Typography textAlign="center" color="primary">Perfil</Typography>
+                                    </MenuItem>
+                                </div>
+
+                            )
+
 
                         )
                         }
@@ -139,7 +190,7 @@ export default function NavbarInicio(props) {
                             <Button
 
                                 onClick={() => {
-                                    navigate=("/");
+                                    navigate("/");
                                 }}
                                 style={{ backgroundColor: "#661323", color: "white", height: "100%" }}
 
@@ -148,11 +199,52 @@ export default function NavbarInicio(props) {
                             </Button>
                             <Button
                                 onClick={() => {
-                                  navigate("/Historial");
+                                    navigate("/Historial");
                                 }}
                                 style={{ color: 'white', height: "100%" }}
                             >
                                 Módulos
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    navigate("/Perfil");
+                                }}
+                                sx={{ my: 2, color: 'white' }}
+
+                            >
+                                Perfil
+                            </Button>
+                        </div>
+
+                    ) : (navBarActivo === "Modulos" ? (
+                        <div>
+                            <Button
+
+                                onClick={() => {
+                                    navigate("/");
+                                }}
+                                sx={{ my: 2, color: 'white' }}
+
+                            >
+                                Inicio
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    navigate("/Historial");
+                                }}
+                                style={{ backgroundColor: "#661323", color: "white" }}
+
+                            >
+                                Módulos
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    navigate("/Perfil");
+                                }}
+                                sx={{ my: 2, color: 'white' }}
+
+                            >
+                                Perfil
                             </Button>
                         </div>
 
@@ -161,7 +253,7 @@ export default function NavbarInicio(props) {
                             <Button
 
                                 onClick={() => {
-                                  navigate("/");
+                                    navigate("/");
                                 }}
                                 sx={{ my: 2, color: 'white' }}
 
@@ -169,15 +261,27 @@ export default function NavbarInicio(props) {
                                 Inicio
                             </Button>
                             <Button
-                                onClick={handleCloseNavMenu}
-                                style={{ backgroundColor: "#661323", color: "white" }}
+                                onClick={() => {
+                                    navigate("/Historial");
+                                }}
+                                sx={{ my: 2, color: 'white' }}
 
                             >
                                 Módulos
                             </Button>
+                            <Button
+                                onClick={() => {
+                                    navigate("/Perfil");
+                                }}
+
+                                style={{ backgroundColor: "#661323", color: "white" }}
+
+                            >
+                                Perfil
+                            </Button>
                         </div>
 
-                    )
+                    ))
                     }
 
 

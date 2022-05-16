@@ -7,6 +7,7 @@ import { PrivateRoute } from './Utils/PrivateRoute';
 import CrearModulo from './Paginas/CrearModulo';
 import VisualizarModulo from './Paginas/VisualizarModulo';
 import Historial from './Paginas/Historial'
+import Perfil from './Paginas/Perfil';
 
 const theme = createTheme({
   palette: {
@@ -76,6 +77,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Historial />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Perfil"
+              element={
+                <PrivateRoute>
+                  <Perfil />
                 </PrivateRoute>
               }
             />
