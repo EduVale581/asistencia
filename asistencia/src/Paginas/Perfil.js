@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
 import {
@@ -11,15 +11,9 @@ import {
     IconButton,
     InputAdornment
 } from '@mui/material/';
-import { useNavigate } from "react-router-dom"
-import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
 import { auth } from '../Utils/firebase';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { semestreActual } from '../Utils/funciones';
 
 import { updatePassword } from "firebase/auth";
-
-import AddIcon from "@mui/icons-material/Add";
 import { LoadingButton } from '@mui/lab';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
