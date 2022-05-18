@@ -12,6 +12,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import { semestreActual } from '../Utils/funciones';
+import _ from 'lodash';
 
 const CrearModulo = () => {
 
@@ -23,7 +24,8 @@ const CrearModulo = () => {
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaTermino, setFechaTermino] = useState('');
     const [carrera, setCarrera] = useState('');
-    const [horario, setHorario] = useState([]);
+
+    const [moduloHorario, setModuloHorario] = useState([]);
 
     const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const bloques = [
@@ -39,6 +41,8 @@ const CrearModulo = () => {
         'Bloque 10 / 19:00 - 20:00',
         'Bloque 11 / 20:10 - 21:10'
     ]
+
+  
     const carrerasUtal = [
         'Ingeniería Civil en Computación - Campus Los Niches',
         'Ingeniería Civil Mecánica - Campus Los Niches',
@@ -60,12 +64,12 @@ const CrearModulo = () => {
                 fechaInicio: fechaInicio,
                 fechaTermino: fechaTermino,
                 carrera: carrera,
-                horario: horario,
+                horario: moduloHorario,
                 idProfesor: currentUser.uid,
                 semestre: semestre,
                 estudiantes: []
-
             });
+            
         } catch (error) {
             console.log(error);
         }
@@ -77,17 +81,116 @@ const CrearModulo = () => {
         setFechaInicio('');
         setFechaTermino('');
         setCarrera('');
-        setHorario([]);
+        setModuloHorario({});
     }
 
     const handleChecBox = (dia, bloque) =>{
         let bloqueDefinido = dia+' '+bloque;
-        if(horario.includes(bloqueDefinido)){
+
+        let actualizar = true;
+
+        let nuevo = {
+            bloque: 'Bloque 1',
+            diaSemana: dia,
+        }
+
+        if(bloque.includes('Bloque 1')){
+            nuevo = {
+                bloque: 'Bloque 1',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 2')){
+            nuevo = {
+                bloque: 'Bloque 2',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 3')){
+            nuevo = {
+                bloque: 'Bloque 3',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 4')){
+            nuevo = {
+                bloque: 'Bloque 4',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 5')){
+            nuevo = {
+                bloque: 'Bloque 5',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 6')){
+            nuevo = {
+                bloque: 'Bloque 6',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 7')){
+            nuevo = {
+                bloque: 'Bloque 7',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 8')){
+            nuevo = {
+                bloque: 'Bloque 8',
+                diaSemana: dia,
+            }
+        }   
+        if(bloque.includes('Bloque 9')){
+            nuevo = {
+                bloque: 'Bloque 9',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 10')){
+            nuevo = {
+                bloque: 'Bloque 10',
+                diaSemana: dia,
+            }
+        }
+        if(bloque.includes('Bloque 11')){
+            nuevo = {
+                bloque: 'Bloque 11',
+                diaSemana: dia,
+            }
+        }
+
+        /* if(horario.includes(bloqueDefinido)){
             var pos = horario.indexOf( bloqueDefinido );
             horario.splice( pos, 1 );
         }else{
             setHorario([...horario, bloqueDefinido]);
         }
+        */
+        
+        moduloHorario.map((horario, index)=>{
+            if(horario.bloque === nuevo.bloque){
+                if( horario.diaSemana === nuevo.diaSemana){
+                    moduloHorario.splice(index, 1);
+                    console.log('ya existe');
+                    actualizar = false;
+                }
+            }
+        })
+        if(actualizar){
+            setModuloHorario([...moduloHorario, nuevo]);
+        }
+        actualizar = false;
+        
+
+        /* if(moduloHorario.includes(nuevo)){
+            console.log('lo tiene ya uwu')
+            var pos = moduloHorario.indexOf( nuevo );
+            moduloHorario.splice( pos, 1 );
+        }else{
+            setModuloHorario([...moduloHorario, nuevo]);
+        } */
     }
 
     return (
