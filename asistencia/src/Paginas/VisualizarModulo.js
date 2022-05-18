@@ -62,7 +62,7 @@ export default function VisualizarModulo() {
     const [valueTabs, setValueTabs] = useState(0);
 
     const [mostrarModalNuevoEstudiante, setMostrarNuevoEstudiante] = useState(false);
-
+    
     const [estudiantes, setEstudiantes] = useState([]);
 
    
@@ -172,7 +172,7 @@ export default function VisualizarModulo() {
 
                             <TabPanel value={valueTabs} index={1}>
                                 <Grid container>                          
-                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido}/>
+                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido} id={id}/>
                                 </Grid>
                             </TabPanel>
                         </Box>

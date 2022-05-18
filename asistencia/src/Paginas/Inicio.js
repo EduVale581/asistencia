@@ -34,6 +34,8 @@ export default function Inicio() {
 
     const [modulos, setModulos] = useState([]);
     const [cargandoModulos, setCargandoModulos] = useState(false);
+    const [idModulo, setIDModulo] = useState(null);
+    
     const navigate = useNavigate();
     const handleClose = () => setAsis(false);
 
@@ -129,6 +131,7 @@ export default function Inicio() {
                                                 if (currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor") {
                                                     navigate("/modulos/" + moduloEleccion.id);
                                                 } else {
+                                                setIDModulo(moduloEleccion.id);
                                                     setAsis(true);
                                                 }
                                             }}
@@ -191,7 +194,7 @@ export default function Inicio() {
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <VisualizarModuloEstudiante id={"t3BlnHq9FMUXR0PyUU3y"} />
+                        <VisualizarModuloEstudiante id={idModulo} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>

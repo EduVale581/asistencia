@@ -67,7 +67,8 @@ const CrearModulo = () => {
                 horario: moduloHorario,
                 idProfesor: currentUser.uid,
                 semestre: semestre,
-                estudiantes: []
+                estudiantes: [],
+                activo: false
             });
             
         } catch (error) {
@@ -92,72 +93,84 @@ const CrearModulo = () => {
         let nuevo = {
             bloque: 'Bloque 1',
             diaSemana: dia,
+            activo: false
         }
 
         if(bloque.includes('Bloque 1')){
             nuevo = {
                 bloque: 'Bloque 1',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 2')){
             nuevo = {
                 bloque: 'Bloque 2',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 3')){
             nuevo = {
                 bloque: 'Bloque 3',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 4')){
             nuevo = {
                 bloque: 'Bloque 4',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 5')){
             nuevo = {
                 bloque: 'Bloque 5',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 6')){
             nuevo = {
                 bloque: 'Bloque 6',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 7')){
             nuevo = {
                 bloque: 'Bloque 7',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 8')){
             nuevo = {
                 bloque: 'Bloque 8',
                 diaSemana: dia,
+                activo: false
             }
         }   
         if(bloque.includes('Bloque 9')){
             nuevo = {
                 bloque: 'Bloque 9',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 10')){
             nuevo = {
                 bloque: 'Bloque 10',
                 diaSemana: dia,
+                activo: false
             }
         }
         if(bloque.includes('Bloque 11')){
             nuevo = {
                 bloque: 'Bloque 11',
                 diaSemana: dia,
+                activo: false
             }
         }
 
