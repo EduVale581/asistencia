@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
@@ -9,19 +8,70 @@ import {
 } from '@mui/material/';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { LoadingButton } from '@mui/lab';
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from '../Utils/firebase';
 
 
 export default function ListaCursos(props) {
-    const { estudiantes } = props;
+    const { estudiantes, setEstudiantes, desactivarBoton, idModulo } = props;
+
+    const [cargando, setCargando] = useState(false)
+
     return (
         <List dense={true}>
             {estudiantes && estudiantes.map((elemento, index) => {
                 return (
                     <ListItem key={"listaEstudiantes_" + index}
                         secondaryAction={
-                            <IconButton edge="end" aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton>
+                            desactivarBoton ? (
+
+                                <></>
+
+                            ) : (
+                                <LoadingButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    loading={cargando}
+                                    onClick={() => {
+                                        setCargando(true)
+                                        if (Array.isArray(estudiantes)) {
+                                            let arregloEstudiantes2 = estudiantes;
+
+                                            let arregloEstudiantesEliminado = arregloEstudiantes2.filter(e => e.correo !== elemento.correo);
+                                            const docRef = doc(db, "modulos", idModulo);
+                                            updateDoc(docRef, {
+                                                estudiantes: arregloEstudiantesEliminado
+                                            }).then(() => {
+                                                getDoc(docRef).then((docSnap) => {
+                                                    if (docSnap.exists()) {
+                                                        const documentoObtenido = docSnap.data();
+                                                        if (documentoObtenido.estudiantes) {
+                                                            setEstudiantes(documentoObtenido.estudiantes)
+
+                                                        }
+                                                        else {
+                                                            setEstudiantes(arregloEstudiantesEliminado)
+                                                        }
+
+                                                    } else {
+                                                    }
+
+                                                });
+
+
+                                            }).catch(() => {
+
+                                            });
+
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </LoadingButton>
+
+                            )
+
                         }
                     >
                         <ListItemIcon >

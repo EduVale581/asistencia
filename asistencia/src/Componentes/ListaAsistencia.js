@@ -221,14 +221,6 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
     tomarAsistencia();
     return (
         <>
-            {/* <Button>{modulo.nombre}</Button>
-            {
-                estudiantes.map((estudiante, index)=>{
-                    return (
-                        <Button key={index}>{estudiante.nombre}</Button>
-                    )
-                })
-            } */}
             <Grid item xs={12} md={12}>
                 {
                     estado ?
@@ -259,58 +251,14 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
                         )
                 }
 
-                {/* {
-                    iniciarAsistencia ?
-                    (<Button
-                        variant='contained'
-                        onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
-                    >
-                        Finalizar asistencia
-                    </Button>)
-                    :
-                    (<Button
-                        variant='contained'
-                        onClick={()=>{setIniciarAsistencia(!iniciarAsistencia)}}
-                    >
-                        Tomar asistencia
-                    </Button>)
-                } */}
-
             </Grid>
 
             <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
-                {/* <ListaCursos estudiantes={estudiantes} /> */}
-                {
-                    /*estudiantes.map((estudiante, index)=>{
-                        return (
-                            <ListItem key={"listaEstudiantes_" + index}>
-                                <ListItemIcon >
-                                    <AccountCircleIcon />
-                                </ListItemIcon>
-                                <Stack spacing={0} width="100%" marginLeft="5%">
-                                    <ListItemText primary={estudiante.nombre} style={{ color: "#A61F38" }} />
-                                    <ListItemText primary={estudiante.correo} color="GrayText" />
-                                </Stack>
-                                {
-                                    iniciarAsistencia ? (
-                                        estudiante.presente ?
-                                        (<Button variant='contained' color="success">Presente</Button>)
-                                        :
-                                        (<Button variant='outlined' color="error">Ausente</Button>)
-                                    ):(null)
-                                }
-
-                            </ListItem>
-                        )
-                    })*/
-                }
-                {
-                    <TablaAsistenciaModulo
-                        idModulo={id}
-                        iniciarAsistencia={iniciarAsistencia}
-                        estudiantesModulo={estudiantes}
-                    />
-                }
+                <TablaAsistenciaModulo
+                    idModulo={id}
+                    iniciarAsistencia={iniciarAsistencia}
+                    estudiantesModulo={estudiantes}
+                />
             </Grid>
         </>
     )
