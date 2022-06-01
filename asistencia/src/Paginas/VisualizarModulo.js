@@ -14,11 +14,15 @@ import {
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../Utils/firebase';
-import { doc, getDoc } from "firebase/firestore";
+import {
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    collection
+} from "firebase/firestore";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ModalNuevoEstudiantes from '../Componentes/ModalNuevoEstudiantes';
-
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListaAsistencia from '../Componentes/ListaAsistencia';
 
 function TabPanel(props) {
@@ -62,11 +66,13 @@ export default function VisualizarModulo() {
     const [valueTabs, setValueTabs] = useState(0);
 
     const [mostrarModalNuevoEstudiante, setMostrarNuevoEstudiante] = useState(false);
-    
+
     const [estudiantes, setEstudiantes] = useState([]);
 
-   
-    
+    const [desactivarBoton, setDesactivarBoton] = useState(false);
+
+
+
     const handleChangeTabs = (event, newValue) => {
         setValueTabs(newValue);
     };
@@ -77,11 +83,6 @@ export default function VisualizarModulo() {
 
         }
     }, [currentUser.tipoUsuario]);
-
-
-    const validarFecha = () =>{
-        return false;        
-    }
 
     useEffect(() => {
         async function obtenerDocumento() {
@@ -105,6 +106,26 @@ export default function VisualizarModulo() {
 
         }
         obtenerDocumento();
+
+
+    }, [id])
+
+    useEffect(() => {
+        async function obtenerAsistencias() {
+            const q = query(collection(db, "modulos/" + id + "/asistencias"));
+
+            const querySnapshot = await getDocs(q);
+            let elementos = 0
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                elementos = elementos + 1;
+            });
+            if (elementos >= 1) {
+                setDesactivarBoton(true);
+            }
+
+        }
+        obtenerAsistencias();
 
 
     }, [id])
@@ -148,19 +169,28 @@ export default function VisualizarModulo() {
                             <TabPanel value={valueTabs} index={0}>
                                 <Grid container>
                                     <Grid item xs={12} md={12}>
-                                        <Button
-                                            variant='contained'
-                                            onClick={() => {
-                                                setMostrarNuevoEstudiante(true)
-                                            }}
-                                        >
-                                            Agregar Estudiantes
-                                        </Button>
+                                        {!desactivarBoton && (
+                                            <Button
+                                                variant='contained'
+                                                onClick={() => {
+                                                    setMostrarNuevoEstudiante(true)
+                                                }}
+                                            >
+                                                Agregar Estudiantes
+                                            </Button>
+
+                                        )}
+
 
                                     </Grid>
 
                                     <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
-                                        <ListaCursos estudiantes={estudiantes} />
+                                        <ListaCursos
+                                            estudiantes={estudiantes}
+                                            setEstudiantes={setEstudiantes}
+                                            desactivarBoton={desactivarBoton}
+                                            idModulo={id}
+                                        />
 
                                     </Grid>
 
@@ -171,8 +201,8 @@ export default function VisualizarModulo() {
                             </TabPanel>
 
                             <TabPanel value={valueTabs} index={1}>
-                                <Grid container>                          
-                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido} id={id}/>
+                                <Grid container>
+                                    <ListaAsistencia estudiantes={estudiantes} modulo={moduloObtenido} id={id} />
                                 </Grid>
                             </TabPanel>
                         </Box>
