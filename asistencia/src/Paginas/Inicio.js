@@ -167,7 +167,6 @@ export default function Inicio() {
                                             <Button
                                                 fullWidth
                                                 variant='contained'
-
                                             >
                                                 Historial de Asistencia
 
