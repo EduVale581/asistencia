@@ -33,22 +33,29 @@ export default function Historial(){
   const [modulos, setModulos] = useState([])
 
   useEffect(() => {
-    /* console.log(currentUser.email) */
     async function obtenerModulos() {
 
         const q = query(collection(db, "modulos"));
         const querySnapshot = await getDocs(q);
         const modulosAux = [];
         querySnapshot.forEach((doc) => {
-          doc.data().estudiantes.map((estudiante) => {
-            if(estudiante.correo == currentUser.email){
-              /* console.log(estudiante.nombre+' está en la lista del modulo '+doc.data().nombre); */
+          if(currentUser.tipoUsuario === 'Profesor'){
+            if(currentUser.uid === doc.data().idProfesor){
               modulosAux.push(doc.data());
-            }else{
-              /* console.log('no está en el modulo '+doc.data().nombre) */
             }
-            
-          })
+          }
+          if(currentUser.tipoUsuario === 'Estudiante'){
+            doc.data().estudiantes.map((estudiante) => {
+              if(estudiante.correo == currentUser.email){
+                /* console.log(estudiante.nombre+' está en la lista del modulo '+doc.data().nombre); */
+                modulosAux.push(doc.data());
+              }else{
+                /* console.log('no está en el modulo '+doc.data().nombre) */
+              }
+              
+            })
+          }
+          
         });
         setModulos(modulosAux);
       }
