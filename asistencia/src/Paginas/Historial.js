@@ -17,20 +17,29 @@ import {
     Divider,
     Stack,
     Card,
-    CardContent
+    CardContent,
+    Dialog,
+    DialogContent,
+    DialogActions
 }
     from '@mui/material';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { db } from '../Utils/firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
+import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
+import { useParams } from "react-router-dom";
 
 
 
 export default function Historial(){
-
+  const [asisAlumno, setAsis] = useState(false);
+  const { id } = useParams();
   const { currentUser } = useAuth();
 
   const [modulos, setModulos] = useState([])
+  const [idModulo, seIdModulo] = useState('');
+  const handleClose = () => setAsis(false);
+
 
   useEffect(() => {
     async function obtenerModulos() {
@@ -41,14 +50,16 @@ export default function Historial(){
         querySnapshot.forEach((doc) => {
           if(currentUser.tipoUsuario === 'Profesor'){
             if(currentUser.uid === doc.data().idProfesor){
-              modulosAux.push(doc.data());
+              /* modulosAux.push(doc.data()); */
+              modulosAux.push({ id: doc.id, ...doc.data() })
             }
           }
           if(currentUser.tipoUsuario === 'Estudiante'){
             doc.data().estudiantes.map((estudiante) => {
               if(estudiante.correo == currentUser.email){
                 /* console.log(estudiante.nombre+' está en la lista del modulo '+doc.data().nombre); */
-                modulosAux.push(doc.data());
+                /* modulosAux.push(doc.data()); */
+                modulosAux.push({ id: doc.id, ...doc.data() })
               }else{
                 /* console.log('no está en el modulo '+doc.data().nombre) */
               }
@@ -80,14 +91,21 @@ export default function Historial(){
                <Card sx={{ height: 300 }}>
                  <CardContent>
                  <Box sx={{height: 250}}>
-                   <Typography style= {{textAlign: 'center'}} >
+                   <Typography style= {{textAlign: 'center', color: "#A61F38"}} >
                      {modulo.nombre}
                    </Typography>
                  </Box>
 
 
                    <Box sx={{height: 50}}>
-                     <Button fullWidth variant = "contained" style= {{display: 'center'}}>
+                     <Button 
+                      fullWidth 
+                      variant = "contained" 
+                      style= {{display: 'center'}} 
+                      onClick={()=>{
+                        setAsis(true) 
+                        seIdModulo(modulo.id)
+                      }}>
                        Ver historial
                      </Button>
                    </Box>
@@ -99,7 +117,26 @@ export default function Historial(){
          </Grid>
 
        </Stack>
+       {asisAlumno && (
+                <Dialog
+                    open={asisAlumno}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogContent>
+                        <ModalAsistenciaModulo id={idModulo} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>
+                            Cerrar
+                        </Button>
+                    </DialogActions>
 
+                </Dialog>
+            )}
 
     </div>
   )
