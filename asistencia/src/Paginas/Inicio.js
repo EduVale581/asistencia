@@ -24,6 +24,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { semestreActual } from '../Utils/funciones';
 
 import AddIcon from "@mui/icons-material/Add";
+import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
 
 
 export default function Inicio() {
@@ -88,13 +89,6 @@ export default function Inicio() {
 
         }
         obtenerModulos()
-
-
-
-
-
-
-
     }, [currentUser, semestre])
 
 
@@ -177,7 +171,6 @@ export default function Inicio() {
                                             <Button
                                                 fullWidth
                                                 variant='contained'
-
                                             >
                                                 Historial de Asistencia
 
@@ -204,7 +197,7 @@ export default function Inicio() {
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <VisualizarModuloEstudiante id={idModulo} />
+                        <ModalAsistenciaModulo id={"QvgXXbWpye0muGML0x3i"} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>

@@ -8,6 +8,7 @@ import CrearModulo from './Paginas/CrearModulo';
 import VisualizarModulo from './Paginas/VisualizarModulo';
 import Historial from './Paginas/Historial'
 import Perfil from './Paginas/Perfil';
+import HistorialEstudiante from './Componentes/HistorialEstudiante';
 
 const theme = createTheme({
   palette: {
@@ -85,6 +86,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Perfil />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/HistorialEstudiante"
+              element={
+                <PrivateRoute>
+                  <HistorialEstudiante/>
                 </PrivateRoute>
               }
             />
