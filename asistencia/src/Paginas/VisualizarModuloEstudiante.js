@@ -52,7 +52,6 @@ export default function VisualizarModuloEstudiante(props) {
             getDoc(docRef).then((docSnap)=>{
                 if (docSnap.exists()) {
                     
-
                     setListaAsistentes(docSnap.data());
                     setCargando(true);
                     console.log(docSnap.data());

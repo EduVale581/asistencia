@@ -16,6 +16,7 @@ import {
     DialogActions,
     Skeleton
 } from '@mui/material/';
+import "../styles/asis.css"
 import { useNavigate } from "react-router-dom"
 import VisualizarModuloEstudiante from './VisualizarModuloEstudiante';
 import { db } from '../Utils/firebase';
@@ -39,6 +40,15 @@ export default function Inicio() {
     const navigate = useNavigate();
     const handleClose = () => setAsis(false);
 
+    const horarioActivo = (horario) => {
+        let active = "";
+        horario.forEach(hora => {
+            if (hora.activo){
+                active = "asis";
+            }    
+        })
+        return active;
+    }
 
 
     useEffect(() => {
@@ -71,7 +81,6 @@ export default function Inicio() {
                     }
 
                 });
-
                 setModulos(modulosAux)
                 setCargandoModulos(true);
             }
@@ -123,7 +132,8 @@ export default function Inicio() {
                     {cargandoModulos ?
                         (modulos.map((moduloEleccion, index) => (
                             <Grid item xs={2} sm={4} md={4} key={index}>
-                                <Card sx={{ height: 300, cursor: "pointer" }}>
+                                
+                                <Card className={horarioActivo(moduloEleccion.horario)} sx={{ height: 300, cursor: "pointer" }}>
 
                                     <CardContent>
                                         <CardActions
