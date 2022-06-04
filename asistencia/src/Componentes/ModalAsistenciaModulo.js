@@ -6,10 +6,9 @@ import {
     Stack
 }
     from '@mui/material';
-import NavbarInicio from '../Componentes/NavbarInicio';
 import { db } from '../Utils/firebase'
 import { useAuth } from '../Context/AuthContext';
-import { doc, onSnapshot, collection, query, where, getDocs,getDoc, updateDoc } from "firebase/firestore";
+import { doc, collection, query,  getDocs,getDoc } from "firebase/firestore";
 
 
 export default function ModalAsistenciaModulo(props){
@@ -52,9 +51,23 @@ export default function ModalAsistenciaModulo(props){
         return totalAsistido + totalNoAsistido;
     }
 
+    const getColor = () => {
+        if(getPorcentaje() >= 70){
+            return '#008000' 
+        }else{
+            return '#FF0000'
+        }
+    }
+
     const getPorcentaje = () => {
-        let porcentaje = (totalAsistido/getTotal())*100;        
-        return porcentaje;
+        let porcentaje = (totalAsistido/getTotal())*100;  
+        console.log(porcentaje); 
+        if(!isNaN(porcentaje)){
+            return Math.round(porcentaje);
+        }else{
+            return 0;
+        }  
+        
     }
 
     return(
@@ -65,9 +78,9 @@ export default function ModalAsistenciaModulo(props){
                </Typography>
            </Stack>
            {clasesAsistidas.map((c, index) => (                
-               <Stack marginTop="20px" marginLeft="20%" marginBottom="10px" key = {index} direction = "row" spacing = {20}>
+               <Stack marginTop="20px" marginLeft="15%" marginBottom="10px" key = {index} direction = "row" spacing = {20}>
                    <Typography>
-                       {c.Fecha}
+                       Clase: {c.Fecha}
                    </Typography>
                    <Typography>
                        {c.Bloque}
@@ -76,9 +89,9 @@ export default function ModalAsistenciaModulo(props){
                </Stack>
            ))}
            {clasesNoAsistidas.map((c, index) => (
-               <Stack  marginLeft="20%" marginBottom= "10px" key = {index} direction = "row" spacing= {20}>
+               <Stack  marginLeft="15%" marginBottom= "10px" key = {index} direction = "row" spacing= {20}>
                    <Typography>
-                        {c.Fecha}
+                        Clase: {c.Fecha}
                    </Typography>
                    <Typography>
                        {c.Bloque}
@@ -86,7 +99,7 @@ export default function ModalAsistenciaModulo(props){
                    <CancelOutlinedIcon sx={{color: "#FF0000"}}/>
                </Stack>
            ))}
-           <Stack direction="row" spacing= {2} marginTop= "20px">
+           <Stack direction="row" spacing= {2} marginTop= "20px" style={{textAlign: 'center'}}>
                <Typography>
                    Clases Asistidas = {totalAsistido}
                </Typography>
@@ -96,7 +109,7 @@ export default function ModalAsistenciaModulo(props){
                <Typography>
                    Clases Totales = {getTotal()}
                </Typography>
-               <Typography>
+               <Typography color={getColor()}>
                    Porcentaje asistido = {getPorcentaje()} %
                </Typography>
            </Stack>
