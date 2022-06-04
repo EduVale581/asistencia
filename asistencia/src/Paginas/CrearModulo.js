@@ -31,7 +31,7 @@ const CrearModulo = () => {
     const bloques = [
         'Bloque 1 / 8:30 - 9:30',
         'Bloque 2 / 9:40 - 10:40',
-        'Bloque 3 / - 11:50',
+        'Bloque 3 / 10:50 - 11:50',
         'Bloque 4 / 12:00 - 13:00',
         'Bloque 5 / 13:10 - 14:10',
         'Bloque 6 / 14:20 - 15:20',
@@ -74,6 +74,7 @@ const CrearModulo = () => {
         } catch (error) {
             console.log(error);
         }
+        navigate('/')
     }
 
     const handleReset = () =>{
