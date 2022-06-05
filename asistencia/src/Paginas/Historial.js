@@ -28,6 +28,7 @@ import { db } from '../Utils/firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
 import { useParams } from "react-router-dom";
+import TablaAsistenciaModulo from '../Componentes/TablaAsistenciaModulo';
 
 
 
@@ -39,7 +40,7 @@ export default function Historial(){
   const [modulos, setModulos] = useState([])
   const [idModulo, seIdModulo] = useState('');
   const handleClose = () => setAsis(false);
-
+  const [estudiantesModulo, setEstudiantesModulo] = useState([]);
 
   useEffect(() => {
     async function obtenerModulos() {
@@ -49,12 +50,14 @@ export default function Historial(){
         const modulosAux = [];
         querySnapshot.forEach((doc) => {
           if(currentUser.tipoUsuario === 'Profesor'){
+            modulosAux.push({ id: doc.id, ...doc.data() })
             if(currentUser.uid === doc.data().idProfesor){
               /* modulosAux.push(doc.data()); */
-              modulosAux.push({ id: doc.id, ...doc.data() })
+              
             }
           }
           if(currentUser.tipoUsuario === 'Estudiante'){
+            setEstudiantesModulo(doc.data().estudiantes);
             doc.data().estudiantes.map((estudiante) => {
               if(estudiante.correo == currentUser.email){
                 /* console.log(estudiante.nombre+' está en la lista del modulo '+doc.data().nombre); */
@@ -127,7 +130,7 @@ export default function Historial(){
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <ModalAsistenciaModulo id={idModulo} />
+                        <TablaAsistenciaModulo id={idModulo}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>
