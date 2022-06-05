@@ -61,7 +61,6 @@ export default function ModalAsistenciaModulo(props){
 
     const getPorcentaje = () => {
         let porcentaje = (totalAsistido/getTotal())*100;  
-        console.log(porcentaje); 
         if(!isNaN(porcentaje)){
             return Math.round(porcentaje);
         }else{
@@ -77,21 +76,45 @@ export default function ModalAsistenciaModulo(props){
                    Mi Asistencia en {nombreModulo}
                </Typography>
            </Stack>
-           {clasesAsistidas.map((c, index) => (                
-               <Stack marginTop="20px" marginLeft="15%" marginBottom="10px" key = {index} direction = "row" spacing = {20}>
-                   <Typography>
-                       Clase: {c.Fecha}
+           <Stack marginTop="20px" marginLeft="15%" marginBottom="10px"  direction = "row" spacing = {20}>
+                   <Typography style={{fontSize: "18px", fontWeight: "bold"}}>
+                       Fecha
                    </Typography>
+                   <Typography style={{fontSize: "18px", fontWeight: "bold"}}>
+                       Bloque
+                   </Typography>
+                   <Typography style={{fontSize: "18px", fontWeight: "bold"}}   >
+                       Asistencia
+                   </Typography>    
+               </Stack>
+           {clasesAsistidas.map((c, index) => (                
+               <Stack width= "65%" 
+               borderBottom= "1px solid" 
+               marginTop="20px" 
+               marginLeft="15%" 
+               marginBottom="25px" 
+               key = {index} 
+               direction = "row" 
+               spacing = {20}>
                    <Typography>
-                       {c.Bloque}
+                       {c.Fecha}
+                   </Typography>
+                   <Typography  marginRight="5%">
+                        {c.Bloque}
                    </Typography>
                    <CheckCircleOutlineIcon sx= {{color: "#008000"}} />
                </Stack>
            ))}
            {clasesNoAsistidas.map((c, index) => (
-               <Stack  marginLeft="15%" marginBottom= "10px" key = {index} direction = "row" spacing= {20}>
-                   <Typography>
-                        Clase: {c.Fecha}
+               <Stack width= "65%"
+                borderBottom= "1px solid"  
+                marginLeft="15%" 
+                marginBottom= "25px"
+                 key = {index}
+                  direction = "row" 
+                  spacing= {20} >
+                   <Typography >
+                        {c.Fecha}
                    </Typography>
                    <Typography>
                        {c.Bloque}
@@ -99,9 +122,9 @@ export default function ModalAsistenciaModulo(props){
                    <CancelOutlinedIcon sx={{color: "#FF0000"}}/>
                </Stack>
            ))}
-           <Stack direction="row" spacing= {2} marginTop= "20px" style={{textAlign: 'center'}}>
+           <Stack direction="row" spacing= {5} marginTop= "60px" style={{textAlign: 'center'}} borderTop="1px solid"     >
                <Typography>
-                   Clases Asistidas = {totalAsistido}
+                    Clases Asistidas = {totalAsistido}
                </Typography>
                <Typography>
                    Clases Faltadas = {totalNoAsistido}
@@ -113,6 +136,7 @@ export default function ModalAsistenciaModulo(props){
                    Porcentaje asistido = {getPorcentaje()} %
                </Typography>
            </Stack>
+           
        </div>
     )
 }

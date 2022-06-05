@@ -170,13 +170,13 @@ export default function Inicio() {
                                             </Stack>
 
                                         </CardActions>
-
-                                        <Box sx={{ height: 90 }}>
+                                        {currentUser.tipoUsuario !== "Profesor" ? ( 
+                                            <Box sx={{ height: 90 }}>
                                             <Button
                                                 fullWidth
                                                 variant='contained'
                                                 onClick={() =>  {
-                                               
+                                            
                                                     setIDModulo(moduloEleccion.id);
                                                     setMostrar(true);
                                                 }}
@@ -185,7 +185,9 @@ export default function Inicio() {
 
                                             </Button>
 
-                                        </Box>
+                                            </Box> )
+                                        : (<div></div>)}            
+                                        
 
                                     </CardContent>
                                 </Card>

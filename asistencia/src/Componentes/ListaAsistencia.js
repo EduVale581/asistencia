@@ -200,7 +200,8 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
         await addDoc(collection(db, "modulos/" + id + "/asistencias"), {
             Fecha: fechaHoy,
             Asistentes: alumnosPresentes,
-            Activo: true
+            Activo: true,
+            Bloque: bloqueActual
         });
 
     }
