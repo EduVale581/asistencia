@@ -1,11 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import Stack from '@mui/material/Stack';
 import {
-    Button, Typography
+    Button, Typography, Alert, Modal, IconButton, Box, AlertTitle
 } from '@mui/material';
 import { db } from '../Utils/firebase'
-import { doc, onSnapshot, collection, query, where, getDocs,getDoc, updateDoc } from "firebase/firestore";
+import { doc,  collection, query, where, getDocs,getDoc, updateDoc  } from "firebase/firestore";
 import { useAuth } from '../Context/AuthContext';
+import CloseIcon from '@mui/icons-material/Close';
+
+
 
 
 export default function VisualizarModuloEstudiante(props) {
@@ -17,7 +20,15 @@ export default function VisualizarModuloEstudiante(props) {
     const [idLista, setIdLista] = useState("");
     const ref = doc(db, 'modulos', id);
     const [listaAsistentes,setListaAsistentes] = useState([null])
-    const [cargando, setCargando] = useState(false);
+    const [presente, setPresente] = useState(false);
+    const [abrirModal, setAbrirModal] = useState(false);
+
+
+    const handleCerrarModal = () =>{        
+        setAbrirModal(false);
+        
+    }
+
 
     useEffect(()=>{
       getDoc(ref).then((snapshot) => {
@@ -28,71 +39,44 @@ export default function VisualizarModuloEstudiante(props) {
     },[])
 
     useEffect(() => {
-        /*async function obtenerListaAsistencia() {
-            const docRef = doc(db, "modulos/"+id+"/asistencias/"+idLista);
-            const docSnap = await getDoc(docRef);
-            
-            if (docSnap.exists()) {
 
-                setListaAsistentes(docSnap.data());
-                setCargando(true);
-                console.log(listaAsistentes);
-            }        
-        }*/
         const q = query(collection(db, "modulos/"+id+"/asistencias"), where("Activo", "==", true));
         getDocs(q).then((querySnapshot)=>{
             let idLista = 0
             querySnapshot.forEach((doc) => {
                 idLista = doc.id;
             });  
-            console.log(idLista)
             setIdLista(idLista)
             const docRef = doc(db, "modulos/"+id+"/asistencias/"+idLista);
-            console.log(docRef)
             getDoc(docRef).then((docSnap)=>{
-                if (docSnap.exists()) {
-                    
+                if (docSnap.exists()) {                    
                     setListaAsistentes(docSnap.data());
-                    setCargando(true);
-                    console.log(docSnap.data());
                 }   
 
             })
 
         });
         
-        
-            //const docSnap = await getDoc(docRef);
-            
-             
-        //btenerListaAsistencia();
     }, [id])
 
-    /*useEffect(() => {
-        async function obtenerIDLista() {
-            const q = query(collection(db, "modulos/"+id+"/asistencias"), where("Activo", "==", true));
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                setIdLista(doc.id);
-            });  
-        }        
-        obtenerIDLista();
-    }, [])*/
-    
+ 
+
     const marcarAsistencia = async () => {
+        setPresente(false);
         let nuevaAsistencia = listaAsistentes;
-        console.log("marcarAsistencia",nuevaAsistencia)
         var presente = false;
         nuevaAsistencia.Asistentes.map((nuevo) => {
             if(nuevo === currentUser.email){
                 presente = true;
-                console.log("Estas presente");
+                setPresente(true);
             }
         })
         if (!presente){
             nuevaAsistencia.Asistentes.push(currentUser.email);    
+            setPresente(false);
         }
-        await updateDoc(doc(db, "modulos/"+id+"/asistencias/"+idLista), nuevaAsistencia);
+        await updateDoc(doc(db, "modulos/"+id+"/asistencias/"+idLista), nuevaAsistencia);   
+        setAbrirModal(true);     
     }
 
     return (
@@ -121,10 +105,67 @@ export default function VisualizarModuloEstudiante(props) {
                     <Button disabled = {!h.activo} onClick = {marcarAsistencia}>
                       Marcar asistencia
                     </Button>
- 
-                  
               </Stack>
             ))}
+            {presente ? (
+                <Modal
+                open={abrirModal}
+                close = {handleCerrarModal}
+                style = {{position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                height: 70}}>             
+                   <Box sx={{ width: '100%' }} spacing={2}>
+                       <Alert severity = 'error' style={{width: '100%'}}action = {
+                           <IconButton 
+                           aria-label='close'
+                           color = 'inherit'
+                           size = 'small'
+                           onClick = {handleCerrarModal}> 
+                               <CloseIcon fontSize = 'inherit'/>
+                           </IconButton>                        
+                       }>
+                       <AlertTitle>
+                           Error
+                       </AlertTitle>    
+                           Ya has marcado tu asistencia en esta clase!</Alert>
+                   </Box>
+   
+               </Modal>
+            ) : (
+                <Modal
+                open={abrirModal}
+                close = {handleCerrarModal}
+                style = {{position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                height: 70}}>             
+                   <Box sx={{ width: '100%' }} spacing={2}>
+                       <Alert style={{width: '100%'}}action = {
+                           <IconButton 
+                           aria-label='close'
+                           color = 'inherit'
+                           size = 'small'
+                           onClick = {handleCerrarModal}> 
+                               <CloseIcon fontSize = 'inherit'/>
+                           </IconButton>                        
+                       }>
+                       <AlertTitle>
+                           Éxito
+                       </AlertTitle>    
+                           Se ha marcado tu asistencia con éxito</Alert>
+                   </Box>
+   
+               </Modal>
+            )}
+            
+            
+            
+
         </div>
     )
 }
