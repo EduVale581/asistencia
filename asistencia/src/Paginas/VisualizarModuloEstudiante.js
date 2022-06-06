@@ -110,7 +110,7 @@ export default function VisualizarModuloEstudiante(props) {
             {presente ? (
                 <Modal
                     open={abrirModal}
-                    close={handleCerrarModal}
+                    
                     style={{
                         position: 'absolute',
                         top: '50%',
@@ -139,7 +139,7 @@ export default function VisualizarModuloEstudiante(props) {
             ) : (
                 <Modal
                     open={abrirModal}
-                    close={handleCerrarModal}
+                    
                     style={{
                         position: 'absolute',
                         top: '50%',
