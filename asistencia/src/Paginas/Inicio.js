@@ -25,7 +25,7 @@ import { semestreActual } from '../Utils/funciones';
 
 import AddIcon from "@mui/icons-material/Add";
 import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
-
+import CrearModulo from './CrearModulo';
 
 export default function Inicio() {
     const [asisAlumno, setAsis] = useState(false);
@@ -39,8 +39,13 @@ export default function Inicio() {
     const [idModulo, setIDModulo] = useState(null);
     const [mostrarAsistencia, setMostrar] = useState(false);
 
+    const [agregarModulo, setAgregarModulo] = useState(false);
     const navigate = useNavigate();
-    const handleClose = () => setAsis(false);
+
+    const agregarNuevo = () =>{
+        setAgregarModulo(true);
+    }
+    const handleClose = () => {setAsis(false)};
     const cerrar = () => setMostrar(false);
 
     const horarioActivo = (horario) => {
@@ -114,7 +119,7 @@ export default function Inicio() {
                         <Grid item>
                             <Button
                                 variant="contained"
-                                onClick={() => { navigate('/crearModulo') }}
+                                onClick={agregarNuevo}
                             >
                                 <AddIcon /> Agregar Módulo
                             </Button>
@@ -196,6 +201,27 @@ export default function Inicio() {
                 </Grid>
 
             </Stack>
+            {agregarModulo && (
+                <Dialog
+                    open={agregarModulo}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogContent>
+                        <CrearModulo setAgregarModulo={setAgregarModulo}/>
+                    </DialogContent>
+{/*                     <DialogActions>
+                        <Button onClick={()=>{setAgregarModulo(false)}}>
+                            Cerrar
+                        </Button>
+                    </DialogActions> */}
+
+                </Dialog>
+            )}
+
             {asisAlumno && (
                 <Dialog
                     open={asisAlumno}

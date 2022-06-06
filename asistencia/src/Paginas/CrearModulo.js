@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { semestreActual } from '../Utils/funciones';
 import _ from 'lodash';
 
-const CrearModulo = () => {
+const CrearModulo = ({setAgregarModulo}) => {
 
     const { currentUser } = useAuth();
     const navigate = useNavigate();
@@ -71,7 +71,7 @@ const CrearModulo = () => {
 
         } catch (error) {
         }
-        navigate('/')
+        setAgregarModulo(false);
     }
 
     const handleReset = () => {
@@ -195,15 +195,15 @@ const CrearModulo = () => {
 
     return (
         <>
-            <Stack spacing={2} style={{ marginTop: "50px", marginRight: "50px" }}>
+
                 <Typography
                     style={{ textAlign: "center", color: "#A61F35" }}
                     variant='h4'
                 >
-                    Crear Módulo
+                    Agregar Módulo
                 </Typography>
                 <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
-                <Box sx={{ flexGrow: 1 }} style={{ margin: "50px", padding: '10px', backgroundColor: "#E5E5E5" }}>
+                <Box sx={{ flexGrow: 1 }} style={{ margin: "50px", padding: '10px', backgroundColor: "#ffff" }}>
 
                     <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}  >
                         <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ margin: '10px' }}>
@@ -302,10 +302,10 @@ const CrearModulo = () => {
                     <Box sx={{ '& button': { m: 1 } }} style={{ margin: '10px' }}>
                         <Button variant='contained' onClick={handleSubmit}>Añadir módulo</Button>
                         <Button variant="contained" onClick={handleReset}>Vaciar campos</Button>
-                        <Button variant="contained" onClick={() => { navigate('/') }}>Cancelar</Button>
+                        <Button variant="contained" onClick={()=>{setAgregarModulo(false)}}>Cancelar</Button>
                     </Box>
                 </Box>
-            </Stack>
+
         </>
     )
 }
