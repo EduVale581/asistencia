@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
 import {
-    Modal,
     Grid,
     Card,
     CardContent,
@@ -26,7 +25,6 @@ import { semestreActual } from '../Utils/funciones';
 
 import AddIcon from "@mui/icons-material/Add";
 import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
-import { ChevronRightSharp } from '@mui/icons-material';
 
 
 export default function Inicio() {
@@ -40,7 +38,7 @@ export default function Inicio() {
     const [cargandoModulos, setCargandoModulos] = useState(false);
     const [idModulo, setIDModulo] = useState(null);
     const [mostrarAsistencia, setMostrar] = useState(false);
-    
+
     const navigate = useNavigate();
     const handleClose = () => setAsis(false);
     const cerrar = () => setMostrar(false);
@@ -48,9 +46,9 @@ export default function Inicio() {
     const horarioActivo = (horario) => {
         let active = "";
         horario.forEach(hora => {
-            if (hora.activo){
+            if (hora.activo) {
                 active = "asis";
-            }    
+            }
         })
         return active;
     }
@@ -130,7 +128,7 @@ export default function Inicio() {
                     {cargandoModulos ?
                         (modulos.map((moduloEleccion, index) => (
                             <Grid item xs={2} sm={4} md={4} key={index}>
-                                
+
                                 <Card className={horarioActivo(moduloEleccion.horario)} sx={{ height: 300, cursor: "pointer" }}>
 
                                     <CardContent>
@@ -139,7 +137,7 @@ export default function Inicio() {
                                                 if (currentUser.tipoUsuario && currentUser.tipoUsuario === "Profesor") {
                                                     navigate("/modulos/" + moduloEleccion.id);
                                                 } else {
-                                                setIDModulo(moduloEleccion.id);
+                                                    setIDModulo(moduloEleccion.id);
                                                     setAsis(true);
                                                 }
                                             }}
@@ -158,7 +156,7 @@ export default function Inicio() {
                                                         <Button
                                                             fullWidth
                                                             variant='contained'
-                                                            
+
                                                         >
                                                             Marcar Asistencia
 
@@ -170,24 +168,24 @@ export default function Inicio() {
                                             </Stack>
 
                                         </CardActions>
-                                        {currentUser.tipoUsuario !== "Profesor" ? ( 
+                                        {currentUser.tipoUsuario !== "Profesor" ? (
                                             <Box sx={{ height: 90 }}>
-                                            <Button
-                                                fullWidth
-                                                variant='contained'
-                                                onClick={() =>  {
-                                            
-                                                    setIDModulo(moduloEleccion.id);
-                                                    setMostrar(true);
-                                                }}
-                                            >
-                                                Historial de Asistencia
+                                                <Button
+                                                    fullWidth
+                                                    variant='contained'
+                                                    onClick={() => {
 
-                                            </Button>
+                                                        setIDModulo(moduloEleccion.id);
+                                                        setMostrar(true);
+                                                    }}
+                                                >
+                                                    Historial de Asistencia
 
-                                            </Box> )
-                                        : (<div></div>)}            
-                                        
+                                                </Button>
+
+                                            </Box>)
+                                            : (<div></div>)}
+
 
                                     </CardContent>
                                 </Card>
@@ -219,23 +217,23 @@ export default function Inicio() {
                 </Dialog>
             )}
             <Dialog
-                    open={mostrarAsistencia}
-                    onClose={cerrar}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    fullWidth
-                    maxWidth="md"
-                >
-                    <DialogContent>
-                        <ModalAsistenciaModulo id={idModulo} />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={cerrar}>
-                            Cerrar
-                        </Button>
-                    </DialogActions>
+                open={mostrarAsistencia}
+                onClose={cerrar}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                fullWidth
+                maxWidth="md"
+            >
+                <DialogContent>
+                    <ModalAsistenciaModulo id={idModulo} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cerrar}>
+                        Cerrar
+                    </Button>
+                </DialogActions>
 
-                </Dialog>
+            </Dialog>
         </div>
     )
 }

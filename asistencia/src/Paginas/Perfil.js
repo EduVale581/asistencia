@@ -49,7 +49,6 @@ export default function Perfil() {
         setAlerta(false);
         if (contrasena === verificacionContrasena) {
             const user = auth.currentUser;
-            console.log(user)
 
             updatePassword(user, contrasena).then(() => {
                 setMensajeAlerta("Contraseña actualizada con éxito");

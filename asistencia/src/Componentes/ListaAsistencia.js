@@ -50,87 +50,81 @@ function fechaHoy() {
 const ListaAsistencia = ({ estudiantes, modulo, id }) => {
 
     const [iniciarAsistencia, setIniciarAsistencia] = useState(false);
-    const [fechaActual, setFechaActual] = useState(fechaHoy());
-    const [estado, setEstado] = useState(false); 
-    const [bloqueActual, setBloqueActual]= useState("");
-    const [idNueva,setIDNueva] = useState("");
-    const [asisNueva, setAsisNueva] = useState(null);
+    const fechaActual = fechaHoy();
+    const [estado, setEstado] = useState(false);
+    const [bloqueActual, setBloqueActual] = useState("");
 
-    const tomarAsistencia = () =>{
+    const tomarAsistencia = () => {
         const hoy = fechaActual.diaSemana;
         const hora = fechaActual.hora;
         const minutos = fechaActual.minutos;
-       
-        const horaActual = hora+':'+minutos;
-        console.log({horaActual});
-        console.log(modulo.horario);
-        modulo.horario.map((horario) =>{
-            /* console.log({hoy})
-            console.log(bloque.diaSemana); */
-            if(horario.diaSemana === hoy && estado!= true){
-                if(horario.bloque === 'Bloque 1'){
-                    if(horaActual>= '8:30' && horaActual <= '9:30'){
+
+        const horaActual = hora + ':' + minutos;
+        modulo.horario.map((horario) => {
+            if (horario.diaSemana === hoy && estado !== true) {
+                if (horario.bloque === 'Bloque 1') {
+                    if (horaActual >= '8:30' && horaActual <= '9:30') {
                         setBloqueActual("Bloque 1")
                         setEstado(true);
                     }
                 }
-                if(horario.bloque === 'Bloque 2'){
-                    if(horaActual>= '9:40' && horaActual <= '10:40'){
+                if (horario.bloque === 'Bloque 2') {
+                    if (horaActual >= '9:40' && horaActual <= '10:40') {
                         setBloqueActual("Bloque 2")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 3') {
-                    if(horaActual>= '10:50' && horaActual <= '11:50'){
+                    if (horaActual >= '10:50' && horaActual <= '11:50') {
                         setBloqueActual("Bloque 3")
                         setEstado(true);
                     }
 
                 }
                 if (horario.bloque === 'Bloque 4') {
-                    if(horaActual>= '12:00' && horaActual <= '13:00'){
+                    if (horaActual >= '12:00' && horaActual <= '13:00') {
                         setBloqueActual("Bloque 4")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 5') {
-                    if(horaActual>= '13:10' && horaActual <= '14:10'){
+                    if (horaActual >= '13:10' && horaActual <= '14:10') {
                         setBloqueActual("Bloque 5")
                         setEstado(true);
-                    }  
+                    }
                 }
                 if (horario.bloque === 'Bloque 6') {
-                    if(horaActual>= '14:20' && horaActual <= '15:20'){
+                    if (horaActual >= '14:20' && horaActual <= '15:20') {
                         setBloqueActual("Bloque 6")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 7') {
-                    if(horaActual>= '15:30' && horaActual <= '16:30'){
+                    if (horaActual >= '15:30' && horaActual <= '16:30') {
                         setBloqueActual("Bloque 7")
                         setEstado(true);
                     }
                 }
-                if(horario.bloque === 'Bloque 8'){
-                    if(horaActual>= '16:40' && horaActual <= '17:40'){
+                if (horario.bloque === 'Bloque 8') {
+                    if (horaActual >= '16:40' && horaActual <= '17:40') {
                         setBloqueActual("Bloque 8")
                         setEstado(true);
                     }
                 }
-                if(horario.bloque === 'Bloque 9'){
-                    if(horaActual>= '17:50' && horaActual <= '18:50'){
+                if (horario.bloque === 'Bloque 9') {
+                    if (horaActual >= '17:50' && horaActual <= '18:50') {
                         setBloqueActual("Bloque 9")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 10') {
-                    if(horaActual>= '19:00' && horaActual <= '20:00'){
+                    if (horaActual >= '19:00' && horaActual <= '20:00') {
                         setBloqueActual("Bloque 10")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 11') {
-                    if(horaActual>= '20:10' && horaActual <= '21:10'){
+                    if (horaActual >= '20:10' && horaActual <= '21:10') {
                         setBloqueActual("Bloque 11")
                         setEstado(true);
                     }
@@ -224,7 +218,6 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
                         :
                         (
                             <Button
-                                onClick={() => { console.log(estado) }}
                                 disabled
                             >
                                 Tomar asistencia
