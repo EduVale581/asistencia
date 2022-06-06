@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavbarInicio from '../Componentes/NavbarInicio';
 import { useAuth } from '../Context/AuthContext';
 import {
+    Modal,
     Grid,
     Card,
     CardContent,
@@ -25,6 +26,7 @@ import { semestreActual } from '../Utils/funciones';
 
 import AddIcon from "@mui/icons-material/Add";
 import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
+import { ChevronRightSharp } from '@mui/icons-material';
 
 
 export default function Inicio() {
@@ -37,9 +39,11 @@ export default function Inicio() {
     const [modulos, setModulos] = useState([]);
     const [cargandoModulos, setCargandoModulos] = useState(false);
     const [idModulo, setIDModulo] = useState(null);
+    const [mostrarAsistencia, setMostrar] = useState(false);
     
     const navigate = useNavigate();
     const handleClose = () => setAsis(false);
+    const cerrar = () => setMostrar(false);
 
     const horarioActivo = (horario) => {
         let active = "";
@@ -154,7 +158,7 @@ export default function Inicio() {
                                                         <Button
                                                             fullWidth
                                                             variant='contained'
-
+                                                            
                                                         >
                                                             Marcar Asistencia
 
@@ -166,17 +170,24 @@ export default function Inicio() {
                                             </Stack>
 
                                         </CardActions>
-
-                                        <Box sx={{ height: 90 }}>
+                                        {currentUser.tipoUsuario !== "Profesor" ? ( 
+                                            <Box sx={{ height: 90 }}>
                                             <Button
                                                 fullWidth
                                                 variant='contained'
+                                                onClick={() =>  {
+                                            
+                                                    setIDModulo(moduloEleccion.id);
+                                                    setMostrar(true);
+                                                }}
                                             >
                                                 Historial de Asistencia
 
                                             </Button>
 
-                                        </Box>
+                                            </Box> )
+                                        : (<div></div>)}            
+                                        
 
                                     </CardContent>
                                 </Card>
@@ -197,7 +208,7 @@ export default function Inicio() {
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <ModalAsistenciaModulo id={"QvgXXbWpye0muGML0x3i"} />
+                        <VisualizarModuloEstudiante id={idModulo} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>
@@ -207,7 +218,24 @@ export default function Inicio() {
 
                 </Dialog>
             )}
+            <Dialog
+                    open={mostrarAsistencia}
+                    onClose={cerrar}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogContent>
+                        <ModalAsistenciaModulo id={idModulo} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={cerrar}>
+                            Cerrar
+                        </Button>
+                    </DialogActions>
 
+                </Dialog>
         </div>
     )
 }

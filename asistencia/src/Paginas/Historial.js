@@ -28,6 +28,7 @@ import { db } from '../Utils/firebase';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import ModalAsistenciaModulo from '../Componentes/ModalAsistenciaModulo';
 import { useParams } from "react-router-dom";
+import TablaAsistenciaModulo from '../Componentes/TablaAsistenciaModulo';
 
 
 
@@ -38,6 +39,8 @@ export default function Historial(){
 
   const [modulos, setModulos] = useState([])
   const [idModulo, seIdModulo] = useState('');
+  const [esAlumno, setEsAlumno] = useState(false);
+  const [estudiantesModulo, setEstudiantesModulo] = useState([]);
   const handleClose = () => setAsis(false);
 
 
@@ -47,14 +50,17 @@ export default function Historial(){
         const q = query(collection(db, "modulos"));
         const querySnapshot = await getDocs(q);
         const modulosAux = [];
+        let esAlumnoAux = false;
         querySnapshot.forEach((doc) => {
           if(currentUser.tipoUsuario === 'Profesor'){
+            esAlumnoAux = false;
             if(currentUser.uid === doc.data().idProfesor){
               /* modulosAux.push(doc.data()); */
               modulosAux.push({ id: doc.id, ...doc.data() })
             }
           }
           if(currentUser.tipoUsuario === 'Estudiante'){
+            esAlumnoAux = true;
             doc.data().estudiantes.map((estudiante) => {
               if(estudiante.correo == currentUser.email){
                 /* console.log(estudiante.nombre+' está en la lista del modulo '+doc.data().nombre); */
@@ -68,6 +74,7 @@ export default function Historial(){
           }
           
         });
+        setEsAlumno(esAlumnoAux);
         setModulos(modulosAux);
       }
       obtenerModulos()
@@ -104,7 +111,8 @@ export default function Historial(){
                       style= {{display: 'center'}} 
                       onClick={()=>{
                         setAsis(true) 
-                        seIdModulo(modulo.id)
+                        seIdModulo(modulo.id);
+                        setEstudiantesModulo(modulo.estudiantes);
                       }}>
                        Ver historial
                      </Button>
@@ -117,27 +125,44 @@ export default function Historial(){
          </Grid>
 
        </Stack>
-       {asisAlumno && (
-                <Dialog
-                    open={asisAlumno}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    fullWidth
-                    maxWidth="md"
-                >
-                    <DialogContent>
-                        <ModalAsistenciaModulo id={idModulo} />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>
-                            Cerrar
-                        </Button>
-                    </DialogActions>
-
-                </Dialog>
-            )}
-
+       {asisAlumno && esAlumno && (
+          <Dialog
+            open={asisAlumno}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth
+            maxWidth="md"
+          >
+            <DialogContent>
+                <ModalAsistenciaModulo id={idModulo} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>
+                    Cerrar
+                </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        {asisAlumno && !esAlumno && (
+          <Dialog
+            open={asisAlumno}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth
+            maxWidth="md"
+          >
+            <DialogContent>
+              <TablaAsistenciaModulo idModulo={idModulo} iniciarAsitencia={false} estudiantesModulo={estudiantesModulo}/>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>
+                  Cerrar
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
     </div>
   )
 }

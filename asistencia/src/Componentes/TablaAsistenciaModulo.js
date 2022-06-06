@@ -47,6 +47,7 @@ export default function TablaAsistenciaModulo(props) {
         var dateB = new Date(fechaB[2] + "/" + fechaB[1] + "" / +fechaB[0]).getTime();
         return dateA > dateB ? 1 : -1;
     };
+
     return (
         <>
             {

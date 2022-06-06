@@ -81,7 +81,6 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
                     }
                 }
                 if (horario.bloque === 'Bloque 3') {
-                    console.log('Bloque 3')
                     if(horaActual>= '10:50' && horaActual <= '11:50'){
                         setBloqueActual("Bloque 3")
                         setEstado(true);
@@ -89,28 +88,24 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
 
                 }
                 if (horario.bloque === 'Bloque 4') {
-                    console.log('Bloque 4')
                     if(horaActual>= '12:00' && horaActual <= '13:00'){
                         setBloqueActual("Bloque 4")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 5') {
-                    console.log('Bloque 5')
                     if(horaActual>= '13:10' && horaActual <= '14:10'){
                         setBloqueActual("Bloque 5")
                         setEstado(true);
                     }  
                 }
                 if (horario.bloque === 'Bloque 6') {
-                    console.log('Bloque 6')
                     if(horaActual>= '14:20' && horaActual <= '15:20'){
                         setBloqueActual("Bloque 6")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 7') {
-                    console.log('bloque 7')
                     if(horaActual>= '15:30' && horaActual <= '16:30'){
                         setBloqueActual("Bloque 7")
                         setEstado(true);
@@ -123,21 +118,18 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
                     }
                 }
                 if(horario.bloque === 'Bloque 9'){
-                    console.log('Bloque 9')
                     if(horaActual>= '17:50' && horaActual <= '18:50'){
                         setBloqueActual("Bloque 9")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 10') {
-                    console.log('bloque 10')
                     if(horaActual>= '19:00' && horaActual <= '20:00'){
                         setBloqueActual("Bloque 10")
                         setEstado(true);
                     }
                 }
                 if (horario.bloque === 'Bloque 11') {
-                    console.log('bloque 11');
                     if(horaActual>= '20:10' && horaActual <= '21:10'){
                         setBloqueActual("Bloque 11")
                         setEstado(true);
@@ -200,7 +192,8 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
         await addDoc(collection(db, "modulos/" + id + "/asistencias"), {
             Fecha: fechaHoy,
             Asistentes: alumnosPresentes,
-            Activo: true
+            Activo: true,
+            Bloque: bloqueActual
         });
 
     }
