@@ -138,7 +138,7 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
         let moduloNuevo = modulo;
 
         modulo.horario.forEach((horario, index) => {
-            if (horario.bloque === bloqueActual) {
+            if (horario.bloque === bloqueActual && horario.diaSemana === fechaHoy().diaSemana) {
                 if (moduloNuevo.horario[index].activo) {
                     moduloNuevo.horario[index].activo = false;
                     getDatos();
