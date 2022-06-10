@@ -8,6 +8,7 @@ import { collection, doc, addDoc, updateDoc, query, where, getDocs } from "fireb
 import TablaAsistenciaModulo from './TablaAsistenciaModulo';
 
 
+
 function fechaHoy() {
     var hoy = new Date();
     let diaSemana = '';
@@ -42,9 +43,8 @@ function fechaHoy() {
         minutos: hoy.getMinutes(),
         segundos: hoy.getSeconds(),
     }
-
-
 }
+
 
 
 const ListaAsistencia = ({ estudiantes, modulo, id }) => {
@@ -53,6 +53,30 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
     const fechaActual = fechaHoy();
     const [estado, setEstado] = useState(false);
     const [bloqueActual, setBloqueActual] = useState("");
+
+    //Configurado a 15 minutos
+    function temporizador (){
+        let timer = setTimeout(() => {            
+            finalizarClase();
+        }, 900000);
+        return () => clearTimeout(timer);
+    }
+
+const finalizarClase = () => {
+    setIniciarAsistencia(false);
+    let moduloNuevo = modulo;    
+        modulo.horario.forEach((horario, index) => {            
+                if (moduloNuevo.horario[index].activo) {
+                    moduloNuevo.horario[index].activo = false;
+                    getDatos();
+                }             
+        })
+        updateDoc(doc(db, "modulos", id), moduloNuevo).then(() => {
+
+        }).catch(() => {
+            console.log("ERROR");
+        });
+}
 
     const tomarAsistencia = () => {
         const hoy = fechaActual.diaSemana;
@@ -145,6 +169,7 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
                 } else {
                     moduloNuevo.horario[index].activo = true;
                     crearSubcoleccionAsistentes();
+                    temporizador();
                 }
             }
         })
@@ -154,6 +179,9 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
 
         });
     }
+
+
+
 
     const getDatos = () => {
         const q = query(collection(db, "modulos/" + id + "/asistencias"), where("Activo", "==", true));
@@ -189,7 +217,6 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
             Activo: true,
             Bloque: bloqueActual
         });
-
     }
 
 
@@ -237,5 +264,7 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
         </>
     )
 }
+
+
 
 export default ListaAsistencia
