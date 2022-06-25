@@ -9,22 +9,26 @@ import {
     Skeleton
 } from '@mui/material/';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, arrayUnion, getDoc, arrayRemove, updateDoc } from "firebase/firestore";
 import { db } from '../Utils/firebase';
+import { LoadingButton } from '@mui/lab';
 
 
 export default function ListaAsistenciaModulo(props) {
     const { asistencia, iniciarAsistencia, idModulo, estudiantesModulo } = props;
-    const [estudiantes, setEstudiantes] = useState([])
-    const [cargando, setCargando] = useState(false)
-
+    const [estudiantes, setEstudiantes] = useState([]);
+    const [cargando, setCargando] = useState(false);
+    const [cargandoDatos, setCargandoDatos] = useState(false);
+    let identificadorDeTemporizador;
     const q = doc(db, "modulos/" + idModulo + "/asistencias/" + asistencia.id);
-    useEffect(() => {
-        if (iniciarAsistencia) {
-            onSnapshot(q, (doc) => {
-                const documentoObtenido = doc.data();
 
-                if (documentoObtenido && documentoObtenido.Asistentes) {
+    function obtenerAsistencia() {
+        setCargando(false);
+        getDoc(q).then((docSnap) => {
+            if (docSnap.exists()) {
+                const documentoObtenido = docSnap.data();
+
+                if (documentoObtenido.Asistentes) {
                     if (Array.isArray(estudiantesModulo) && Array.isArray(documentoObtenido.Asistentes)) {
                         const estudiantesAsistenciaFinal = []
                         estudiantesModulo.forEach(element => {
@@ -42,61 +46,27 @@ export default function ListaAsistenciaModulo(props) {
                         });
 
                         setEstudiantes(estudiantesAsistenciaFinal)
-
+                        setCargando(true)
 
                     }
 
 
                 }
+            } else {
                 setCargando(true)
-            });
+            }
 
-        }
-        else {
-            getDoc(q).then((docSnap) => {
-                if (docSnap.exists()) {
-                    const documentoObtenido = docSnap.data();
+        }).catch(() => {
+            setCargando(true)
 
-                    if (documentoObtenido.Asistentes) {
-                        if (Array.isArray(estudiantesModulo) && Array.isArray(documentoObtenido.Asistentes)) {
-                            const estudiantesAsistenciaFinal = []
-                            estudiantesModulo.forEach(element => {
-                                let estudianteAsiste = documentoObtenido.Asistentes.filter(e => e === element.correo)[0]
-                                if (estudianteAsiste) {
-                                    estudiantesAsistenciaFinal.push({ ...element, presente: true })
+        })
 
-                                }
-                                else {
-                                    estudiantesAsistenciaFinal.push({ ...element, presente: false })
-
-                                }
+    }
 
 
-                            });
-
-                            setEstudiantes(estudiantesAsistenciaFinal)
-                            setCargando(true)
-
-                        }
-
-
-                    }
-                } else {
-                }
-
-            }).catch(() => {
-
-            })
-
-
-
-
-        }
-
-
-    }, [q, estudiantesModulo, iniciarAsistencia])
-
-
+    useEffect(() => {
+        obtenerAsistencia();
+    }, []);
 
     return (
         <>
@@ -115,9 +85,43 @@ export default function ListaAsistenciaModulo(props) {
                                 {
                                     iniciarAsistencia ? (
                                         estudiante.presente ?
-                                            (<Button variant='contained' color="success">Presente</Button>)
+                                            (<LoadingButton
+                                                loading={cargandoDatos}
+                                                variant='contained'
+                                                color="success"
+                                                onClick={() => {
+                                                    setCargandoDatos(true);
+                                                    updateDoc(q, {
+                                                        Asistentes: arrayRemove(estudiante.correo)
+                                                    }).then(() => {
+                                                        obtenerAsistencia();
+                                                        setCargandoDatos(false);
+                                                    }).catch(() => { setCargandoDatos(false); });
+
+                                                }}
+                                            >
+                                                Presente
+                                            </LoadingButton>
+                                            )
                                             :
-                                            (<Button variant='outlined' color="error">Ausente</Button>)
+                                            (
+                                                <LoadingButton
+                                                    loading={cargandoDatos}
+                                                    variant='outlined'
+                                                    color="error"
+                                                    onClick={() => {
+                                                        setCargandoDatos(true);
+                                                        updateDoc(q, {
+                                                            Asistentes: arrayUnion(estudiante.correo)
+                                                        }).then(() => {
+                                                            obtenerAsistencia();
+                                                            setCargandoDatos(false);
+                                                        }).catch(() => { setCargandoDatos(false); });
+
+                                                    }}
+                                                >
+                                                    Ausente
+                                                </LoadingButton>)
                                     ) : (estudiante.presente ?
                                         (<Button variant='contained' color="success" disabled>Presente</Button>)
                                         :
