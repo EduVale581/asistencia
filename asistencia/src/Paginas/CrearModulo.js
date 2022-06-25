@@ -3,21 +3,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Button, Checkbox, FormControlLabel,
     FormGroup, Typography, AccordionDetails, AccordionSummary,
-    Accordion, Autocomplete, TextField, Box, Grid, Divider, Stack
+    Accordion, Autocomplete, TextField, Box, Grid, Divider
 }
     from '@mui/material';
 
 import { db } from '../Utils/firebase'
 import { collection, addDoc } from "firebase/firestore";
 import { useAuth } from '../Context/AuthContext';
-import { useNavigate } from "react-router-dom";
 import { semestreActual } from '../Utils/funciones';
 import _ from 'lodash';
 
-const CrearModulo = ({setAgregarModulo}) => {
+const CrearModulo = ({ setAgregarModulo }) => {
 
     const { currentUser } = useAuth();
-    const navigate = useNavigate();
     const semestre = semestreActual();
     const [nombreModulo, setNombreModulo] = useState('');
     const [codigoModulo, setCodigoModulo] = useState('');
@@ -196,115 +194,115 @@ const CrearModulo = ({setAgregarModulo}) => {
     return (
         <>
 
-                <Typography
-                    style={{ textAlign: "center", color: "#A61F35" }}
-                    variant='h4'
-                >
-                    Agregar Módulo
-                </Typography>
-                <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
-                <Box sx={{ flexGrow: 1 }} style={{ margin: "50px", padding: '10px', backgroundColor: "#ffff" }}>
+            <Typography
+                style={{ textAlign: "center", color: "#A61F35" }}
+                variant='h4'
+            >
+                Agregar Módulo
+            </Typography>
+            <Divider style={{ marginLeft: "10px", backgroundColor: "#A61F38" }} />
+            <Box sx={{ flexGrow: 1 }} style={{ margin: "50px", padding: '10px', backgroundColor: "#ffff" }}>
 
-                    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}  >
-                        <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ margin: '10px' }}>
+                <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}  >
+                    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ margin: '10px' }}>
 
-                            <Grid item xs={8}>
-                                <TextField
-                                    label={"Nombre módulo"}
-                                    variant='outlined'
-                                    fullWidth
-                                    value={nombreModulo}
-                                    onChange={(e) => { setNombreModulo(e.target.value) }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={2.4}>
-                                <TextField
-                                    label="Codigo módulo"
-                                    variant='outlined'
-                                    fullWidth
-                                    value={codigoModulo}
-                                    onChange={(e) => { setCodigoModulo(e.target.value) }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={3.5}>
-                                <TextField
-                                    /* label="Fecha de inicio"  */
-                                    variant='outlined'
-                                    type='date'
-                                    /* helperText='Fomato: dd/mm/aaaa'  */
-                                    fullWidth
-                                    value={fechaInicio}
-                                    onChange={(e) => { setFechaInicio(e.target.value) }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={3.5}>
-                                <TextField
-                                    /* label="Fecha de término"  */
-                                    variant='outlined'
-                                    type='date'
-                                    /* helperText='Fomato: dd/mm/aaaa'  */
-                                    fullWidth
-                                    value={fechaTermino}
-                                    onChange={(e) => { setFechaTermino(e.target.value) }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={carrerasUtal}
-                                    renderInput={(params) => <TextField {...params} label="Carrera" />}
-                                    fullWidth
-                                    onInputChange={(e, inputValue) => { setCarrera(inputValue) }}
-                                />
-                            </Grid>
-
+                        <Grid item xs={8}>
+                            <TextField
+                                label={"Nombre módulo"}
+                                variant='outlined'
+                                fullWidth
+                                value={nombreModulo}
+                                onChange={(e) => { setNombreModulo(e.target.value) }}
+                            />
                         </Grid>
-                        <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ margin: '10px' }}>
-                            {
-                                dias.map((dia, index) => (
-                                    <Grid item xs={2} sm={4} md={4} key={index}>
 
-                                        <Accordion key={index} style={{ margin: '10px' }}>
-                                            <AccordionSummary
-                                                expandIcon={<ExpandMoreIcon />}
-                                                aria-controls="panel1a-content"
-
-                                            >
-                                                <Typography>{dia}</Typography>
-                                            </AccordionSummary>
-
-                                            <AccordionDetails>
-                                                {bloques.map((bloque, index) => (
-                                                    <FormGroup key={index}>
-                                                        <FormControlLabel
-                                                            control={
-                                                                <Checkbox
-                                                                    onChange={() => { handleChecBox(dia, bloque) }}
-                                                                />}
-                                                            label={bloque}
-                                                        />
-                                                    </FormGroup>
-                                                ))}
-                                            </AccordionDetails>
-
-                                        </Accordion>
-                                    </Grid>
-
-                                ))
-                            }
+                        <Grid item xs={2.4}>
+                            <TextField
+                                label="Codigo módulo"
+                                variant='outlined'
+                                fullWidth
+                                value={codigoModulo}
+                                onChange={(e) => { setCodigoModulo(e.target.value) }}
+                            />
                         </Grid>
+
+                        <Grid item xs={3.5}>
+                            <TextField
+                                /* label="Fecha de inicio"  */
+                                variant='outlined'
+                                type='date'
+                                /* helperText='Fomato: dd/mm/aaaa'  */
+                                fullWidth
+                                value={fechaInicio}
+                                onChange={(e) => { setFechaInicio(e.target.value) }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={3.5}>
+                            <TextField
+                                /* label="Fecha de término"  */
+                                variant='outlined'
+                                type='date'
+                                /* helperText='Fomato: dd/mm/aaaa'  */
+                                fullWidth
+                                value={fechaTermino}
+                                onChange={(e) => { setFechaTermino(e.target.value) }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={4}>
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={carrerasUtal}
+                                renderInput={(params) => <TextField {...params} label="Carrera" />}
+                                fullWidth
+                                onInputChange={(e, inputValue) => { setCarrera(inputValue) }}
+                            />
+                        </Grid>
+
                     </Grid>
-                    <Box sx={{ '& button': { m: 1 } }} style={{ margin: '10px' }}>
-                        <Button variant='contained' onClick={handleSubmit}>Añadir módulo</Button>
-                        <Button variant="contained" onClick={handleReset}>Vaciar campos</Button>
-                        <Button variant="contained" onClick={()=>{setAgregarModulo(false)}}>Cancelar</Button>
-                    </Box>
+                    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ margin: '10px' }}>
+                        {
+                            dias.map((dia, index) => (
+                                <Grid item xs={2} sm={4} md={4} key={index}>
+
+                                    <Accordion key={index} style={{ margin: '10px' }}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+
+                                        >
+                                            <Typography>{dia}</Typography>
+                                        </AccordionSummary>
+
+                                        <AccordionDetails>
+                                            {bloques.map((bloque, index) => (
+                                                <FormGroup key={index}>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                onChange={() => { handleChecBox(dia, bloque) }}
+                                                            />}
+                                                        label={bloque}
+                                                    />
+                                                </FormGroup>
+                                            ))}
+                                        </AccordionDetails>
+
+                                    </Accordion>
+                                </Grid>
+
+                            ))
+                        }
+                    </Grid>
+                </Grid>
+                <Box sx={{ '& button': { m: 1 } }} style={{ margin: '10px' }}>
+                    <Button variant='contained' onClick={handleSubmit}>Añadir módulo</Button>
+                    <Button variant="contained" onClick={handleReset}>Vaciar campos</Button>
+                    <Button variant="contained" onClick={() => { setAgregarModulo(false) }}>Cancelar</Button>
                 </Box>
+            </Box>
 
         </>
     )

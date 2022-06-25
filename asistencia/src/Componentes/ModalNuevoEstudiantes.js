@@ -40,9 +40,6 @@ export default function ModalNuevoEstudiantes(props) {
 
     const [archivo, setArchivo] = useState(null);
 
-    const [elementosCopiados, setElementosCopiados] = useState(0);
-    const [elementosNOCopiados, setElementosNOCopiados] = useState(0);
-
     const [nombreCompletoAlumno, setNombreCompletoAlumno] = useState("");
     const [correoAlumno, setCorreoAlumno] = useState("");
     const [numeroMatricula, setNumeroMatricula] = useState("");

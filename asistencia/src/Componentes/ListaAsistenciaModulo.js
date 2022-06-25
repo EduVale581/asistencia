@@ -19,7 +19,6 @@ export default function ListaAsistenciaModulo(props) {
     const [estudiantes, setEstudiantes] = useState([]);
     const [cargando, setCargando] = useState(false);
     const [cargandoDatos, setCargandoDatos] = useState(false);
-    let identificadorDeTemporizador;
     const q = doc(db, "modulos/" + idModulo + "/asistencias/" + asistencia.id);
 
     function obtenerAsistencia() {
