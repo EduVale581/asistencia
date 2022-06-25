@@ -42,10 +42,10 @@ export default function Inicio() {
     const [agregarModulo, setAgregarModulo] = useState(false);
     const navigate = useNavigate();
 
-    const agregarNuevo = () =>{
+    const agregarNuevo = () => {
         setAgregarModulo(true);
     }
-    const handleClose = () => {setAsis(false)};
+    const handleClose = () => { setAsis(false) };
     const cerrar = () => setMostrar(false);
 
     const horarioActivo = (horario) => {
@@ -68,7 +68,6 @@ export default function Inicio() {
                 querySnapshot.forEach((doc) => {
                     modulosAux.push({ id: doc.id, ...doc.data() })
                 });
-
                 setModulos(modulosAux)
                 setCargandoModulos(true);
 
@@ -148,6 +147,13 @@ export default function Inicio() {
                                             }}
                                         >
                                             <Stack sx={{ height: 230, width: "100%" }} spacing={2}>
+                                                {
+                                                    currentUser.tipoUsuario !== "Profesor" && (
+                                                        <Typography textAlign="center" color="inherit">Haz click aquí para marcar asistencia</Typography>
+
+                                                    )
+                                                }
+
                                                 <Typography textAlign="center" color="primary">{moduloEleccion.nombre}</Typography>
 
                                                 {
@@ -211,9 +217,9 @@ export default function Inicio() {
                     maxWidth="md"
                 >
                     <DialogContent>
-                        <CrearModulo setAgregarModulo={setAgregarModulo}/>
+                        <CrearModulo setAgregarModulo={setAgregarModulo} />
                     </DialogContent>
-{/*                     <DialogActions>
+                    {/*                     <DialogActions>
                         <Button onClick={()=>{setAgregarModulo(false)}}>
                             Cerrar
                         </Button>
