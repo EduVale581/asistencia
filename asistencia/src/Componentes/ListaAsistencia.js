@@ -155,7 +155,6 @@ const finalizarClase = () => {
                 }else{
                     if(estado){
                         setEstado(false);
-                        console.log('aca xd')
                     }
                 }
                 
