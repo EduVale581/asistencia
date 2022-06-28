@@ -178,17 +178,26 @@ const finalizarClase = () => {
                         setBloqueActual("Bloque 11")
                         setEstado(true);
                     }
+                }else{
+                    if(estado){
+                        setEstado(false);
+                    }
                 }
+                
             }
         })
     }
 
     const ActivarAsistencia = () => {
         setIniciarAsistencia(!iniciarAsistencia);
+                
         let moduloNuevo = modulo;
+
+        
 
         modulo.horario.forEach((horario, index) => {
             if (horario.bloque === bloqueActual && horario.diaSemana === fechaHoy().diaSemana) {
+                console.log(moduloNuevo.horario[index].activo);
                 if (moduloNuevo.horario[index].activo) {
                     moduloNuevo.horario[index].activo = false;
                     getDatos();
@@ -200,7 +209,7 @@ const finalizarClase = () => {
             }
         })
         updateDoc(doc(db, "modulos", id), moduloNuevo).then(() => {
-
+            
         }).catch(() => {
 
         });

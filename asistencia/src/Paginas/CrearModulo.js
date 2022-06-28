@@ -72,6 +72,7 @@ const CrearModulo = ({setAgregarModulo}) => {
         } catch (error) {
         }
         setAgregarModulo(false);
+        window.location.reload(false);
     }
 
     const handleReset = () => {

@@ -15,6 +15,7 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 import RemoveRedEye from "@mui/icons-material/RemoveRedEye"
 import ModalListaAsistencia from './ModalListaAsistencia';
 export default function TablaAsistenciaModulo(props) {
+    
     const { idModulo, iniciarAsistencia, estudiantesModulo } = props;
 
     const [asistencia, setAsistencias] = useState([])
