@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Button,
     Grid,
 } from '@mui/material';
 import { db } from '../Utils/firebase'
-import { collection, doc, addDoc, updateDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, doc, addDoc, updateDoc, query, where, getDocs,getDoc, QuerySnapshot } from "firebase/firestore";
 import TablaAsistenciaModulo from './TablaAsistenciaModulo';
+import Timer from './Timer';
 
 
 
@@ -53,14 +54,39 @@ const ListaAsistencia = ({ estudiantes, modulo, id }) => {
     const fechaActual = fechaHoy();
     const [estado, setEstado] = useState(false);
     const [bloqueActual, setBloqueActual] = useState("");
+    const [horaClase, setHoraClase] = useState(0);
+    const [minutoClase, setMinutoClase] =useState(0);
 
     //Configurado a 15 minutos
     function temporizador (){
-        let timer = setTimeout(() => {            
+        let timer = setTimeout(() => {                        
             finalizarClase();
         }, 900000);
         return () => clearTimeout(timer);
     }
+
+    useEffect(() => {        
+        getDoc(doc(db, 'modulos', id)).then((snapshot) => {
+            let horario = snapshot.data().horario;
+            console.log(horario);
+            horario.forEach((h) => {
+                if(h.activo === true){                    
+                    setIniciarAsistencia(true);                    
+                }
+            })
+          });
+    },[])
+
+    useEffect(() => {                   
+        const q = query(collection(db, "modulos/" + id + "/asistencias"), where("Activo", "==", true));
+        getDocs(q).then((querySnapshot)=>{            
+            querySnapshot.forEach((doc) => {                
+                setIniciarAsistencia(true);       
+                setHoraClase(doc.data().hora);
+                setMinutoClase(doc.data().minutos);
+            });              
+        });  
+    },[])
 
 const finalizarClase = () => {
     setIniciarAsistencia(false);
@@ -211,16 +237,20 @@ const finalizarClase = () => {
         const fechaActualAux = new Date();
         const fechaHoy = fechaActualAux.getDate() + "/" + (fechaActualAux.getMonth() + 1) + "/" + fechaActualAux.getFullYear();
         const alumnosPresentes = [];
+        const hora = new Date().getHours();
+        const minutos = new Date().getMinutes();
         await addDoc(collection(db, "modulos/" + id + "/asistencias"), {
             Fecha: fechaHoy,
             Asistentes: alumnosPresentes,
             Activo: true,
-            Bloque: bloqueActual
+            Bloque: bloqueActual,
+            hora: hora,
+            minutos: minutos
         });
     }
 
-
     tomarAsistencia();
+
     return (
         <>
             <Grid item xs={12} md={12}>
@@ -251,7 +281,8 @@ const finalizarClase = () => {
                             </Button>
                         )
                 }
-
+                {iniciarAsistencia ? (<Timer hora={horaClase} minutos={minutoClase}/>) : (<div></div>)}
+                
             </Grid>
 
             <Grid item xs={12} md={12} style={{ marginTop: "10px" }}>
@@ -261,6 +292,7 @@ const finalizarClase = () => {
                     estudiantesModulo={estudiantes}
                 />
             </Grid>
+            
         </>
     )
 }
